@@ -134,7 +134,7 @@ body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text);}
 <div class="sheet-strip">
   <h3>🔗 Connect your Google Sheet (Live Data)</h3>
   <div class="sheet-row">
-    <input type="text" id="sheetUrl" placeholder="Paste Google Sheet CSV URL here…"/>
+    <input type="text" id="sheetUrl" placeholder="https://docs.google.com/spreadsheets/d/e/2PACX-1vQHUQPmKi1uBW0_iYl40-yvWhdZhglKiZrEEetrLQ5jXzKSrRTneF3RML8yYKI1xOJyQosUI9xMT1tg/pub?gid=163032460&single=true&output=csv"/>
     <button class="btn-load" onclick="loadFromSheet()">Load Sheet</button>
     <button class="btn-demo" onclick="loadDemo()">Reset to Demo</button>
   </div>
@@ -472,7 +472,7 @@ function resetFilters(){
 // ── sheet loader ──────────────────────────────────────────────────────────────
 async function loadFromSheet(){
   const url=document.getElementById("sheetUrl").value.trim();
-  if(!url){setStatus("Paste your Google Sheet CSV URL first.","err");return;}
+  if(!url){setStatus("https://docs.google.com/spreadsheets/d/e/2PACX-1vQHUQPmKi1uBW0_iYl40-yvWhdZhglKiZrEEetrLQ5jXzKSrRTneF3RML8yYKI1xOJyQosUI9xMT1tg/pub?gid=163032460&single=true&output=csv","err");return;}
   setStatus("Loading…","");
   try{
     const resp=await fetch(url);
