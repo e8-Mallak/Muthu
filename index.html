@@ -17,7 +17,7 @@ body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text);}
   border-top-color:#fff;border-radius:50%;animation:spin 1s linear infinite;margin-bottom:22px;}
 @keyframes spin{to{transform:rotate(360deg);}}
 #loadMsg{color:#fff;font-size:15px;font-weight:700;text-align:center;}
-#loadSub{color:rgba(255,255,255,.6);font-size:12px;margin-top:8px;text-align:center;max-width:360px;}
+#loadSub{color:rgba(255,255,255,.6);font-size:12px;margin-top:8px;text-align:center;max-width:380px;line-height:1.7;}
 
 .topbar{background:linear-gradient(120deg,#1F3864 0%,#1b5496 100%);
   padding:16px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
@@ -29,26 +29,27 @@ body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text);}
 .badge.live{background:rgba(39,200,120,.25);border-color:rgba(39,200,120,.5);}
 .badge.warn{background:rgba(255,193,7,.25);border-color:rgba(255,193,7,.5);}
 
-/* debug panel */
-.debug-panel{background:#0d1117;border-bottom:3px solid #30363d;padding:14px 20px;}
-.debug-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px;}
-.debug-header h3{color:#58a6ff;font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;}
-.debug-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.status-bar{background:#1a2a1a;border-bottom:2px solid #2d4a2d;
+  padding:10px 24px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.status-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+.status-dot.ok{background:#3fb950;box-shadow:0 0 8px rgba(63,185,80,.6);}
+.status-dot.err{background:#f85149;}
+.status-dot.loading{background:#ffc107;animation:pulse 1s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+#statusMsg{font-size:12px;font-weight:600;color:#c9d1d9;}
+#statusMsg.ok{color:#3fb950;}#statusMsg.err{color:#f85149;}
+#statusTs{font-size:11px;color:#6b7a93;margin-left:auto;}
 .btn-reload{padding:6px 16px;background:#238636;color:#fff;border:none;
-  border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;}
+  border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;
+  display:flex;align-items:center;gap:5px;white-space:nowrap;}
 .btn-reload:hover{background:#2ea043;}
 .btn-reload:disabled{background:#444;cursor:not-allowed;}
-.spin-ico{display:inline-block;}.spin-ico.go{animation:spin .8s linear infinite;}
-.debug-log{background:#161b22;border:1px solid #30363d;border-radius:6px;
-  padding:12px 14px;font-size:11px;font-family:'Courier New',monospace;
-  color:#c9d1d9;max-height:160px;overflow-y:auto;line-height:1.6;white-space:pre-wrap;word-break:break-all;}
-.log-ok{color:#3fb950;}.log-err{color:#f85149;}.log-warn{color:#d29922;}.log-info{color:#58a6ff;}
-.debug-summary{margin-top:8px;display:flex;gap:16px;flex-wrap:wrap;}
-.ds{font-size:11px;color:#8b949e;}.ds b{color:#c9d1d9;}
+.spin-i{display:inline-block;}.spin-i.go{animation:spin .8s linear infinite;}
 
 .filter-bar{background:#fff;border-bottom:1px solid var(--border);
   padding:12px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
-.filter-bar label{font-size:11px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.5px;}
+.filter-bar label{font-size:11px;font-weight:700;color:var(--navy);
+  text-transform:uppercase;letter-spacing:.5px;}
 .filter-bar select,.filter-bar input[type=text]{
   padding:6px 10px;border:1.5px solid var(--border);border-radius:6px;
   font-size:12px;color:var(--text);background:var(--bg);outline:none;cursor:pointer;}
@@ -69,24 +70,37 @@ body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text);}
   display:flex;align-items:flex-start;justify-content:space-between;gap:8px;}
 .rm-name{font-size:12px;font-weight:700;color:var(--navy);line-height:1.3;}
 .rm-sub{font-size:10px;color:var(--sub);margin-top:2px;}
-.trend-badge{flex-shrink:0;padding:3px 9px;border-radius:12px;font-size:10px;font-weight:700;white-space:nowrap;}
+.trend-badge{flex-shrink:0;padding:3px 9px;border-radius:12px;
+  font-size:10px;font-weight:700;white-space:nowrap;}
 .kpi-row{display:grid;border-bottom:1px solid var(--border);}
 .kpi{padding:7px 6px;text-align:center;border-right:1px solid #eef1f6;}
 .kpi:last-child{border-right:none;}
-.kpi-m{font-size:9px;color:var(--sub);text-transform:uppercase;letter-spacing:.4px;font-weight:600;}
+.kpi-m{font-size:9px;color:var(--sub);text-transform:uppercase;
+  letter-spacing:.4px;font-weight:600;white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis;}
 .kpi-v{font-size:13px;font-weight:700;color:var(--navy);margin-top:2px;}
 .kpi-v.na{color:#bbb;font-weight:400;font-size:11px;}
 .kpi-d{font-size:9px;margin-top:1px;}
 .kpi-d.up{color:#C0392B;}.kpi-d.dn{color:#27652a;}
 .kpi-d.flat{color:var(--sub);}.kpi-d.base{color:var(--blue);}
 .canvas-wrap{padding:10px 10px 4px;height:185px;position:relative;}
-.no-data{display:flex;align-items:center;justify-content:center;height:100%;font-size:12px;color:#bbb;}
+.no-data{display:flex;align-items:center;justify-content:center;
+  height:100%;font-size:12px;color:#bbb;}
 .card-legend{display:flex;gap:14px;padding:0 12px 8px;flex-wrap:wrap;}
 .leg{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--sub);}
 .leg-box{width:10px;height:10px;border-radius:2px;}
 .leg-line{width:18px;height:2.5px;border-radius:2px;}
-#noResults{display:none;text-align:center;padding:48px 20px;color:var(--sub);font-size:14px;}
-@media(max-width:520px){.grid{grid-template-columns:1fr;padding:12px;}.topbar{padding:12px 16px;}}
+
+.err-box{grid-column:1/-1;background:#fff;border:1px solid #f5c6cb;
+  border-left:5px solid #dc3545;border-radius:10px;padding:24px 28px;}
+.err-box h3{color:#721c24;font-size:14px;font-weight:700;margin-bottom:10px;}
+.err-box p{font-size:12px;color:#555;line-height:1.9;}
+.err-box code{background:#f0f0f0;padding:2px 5px;border-radius:3px;font-size:11px;}
+
+#noResults{display:none;text-align:center;padding:48px 20px;
+  color:var(--sub);font-size:14px;}
+@media(max-width:520px){.grid{grid-template-columns:1fr;padding:12px;}
+  .topbar{padding:12px 16px;}}
 </style>
 </head>
 <body>
@@ -94,13 +108,13 @@ body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text);}
 <div id="loadOverlay">
   <div class="spinner"></div>
   <div id="loadMsg">Fetching live data from Google Sheets…</div>
-  <div id="loadSub">Calling Apps Script — this takes 2–4 seconds</div>
+  <div id="loadSub">Reading your "Chart Data" tab via Apps Script</div>
 </div>
 
 <div class="topbar">
   <div>
     <h1>Mallak Specialties — RM Cost Dashboard</h1>
-    <p id="topSub">Connecting to Google Sheets…</p>
+    <p id="topSub">Connecting to Google Sheets — All Raw Materials per kg rate</p>
   </div>
   <div class="topbar-right">
     <div class="badge" id="hBadge">Loading…</div>
@@ -108,32 +122,29 @@ body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text);}
   </div>
 </div>
 
-<!-- Debug Panel — shows exactly what Apps Script returns -->
-<div class="debug-panel">
-  <div class="debug-header">
-    <h3>📡 Live Data Feed — Google Sheets ↔ Dashboard</h3>
-    <div class="debug-actions">
-      <button class="btn-reload" id="reloadBtn" onclick="loadLiveData(false)">
-        <span class="spin-ico" id="spinIco">🔄</span> Reload from Sheet
-      </button>
-      <span id="lastTs" style="color:#8b949e;font-size:11px;"></span>
-    </div>
-  </div>
-  <div class="debug-log" id="debugLog">Initialising…</div>
-  <div class="debug-summary" id="debugSummary"></div>
+<div class="status-bar">
+  <div class="status-dot loading" id="sDot"></div>
+  <span id="statusMsg">Connecting…</span>
+  <button class="btn-reload" id="reloadBtn" onclick="loadLiveData(false)">
+    <span class="spin-i" id="spinI">🔄</span> Reload from Sheet
+  </button>
+  <span id="statusTs"></span>
 </div>
 
 <div class="filter-bar">
   <label>Search RM</label>
-  <input type="text" id="searchInput" placeholder="e.g. Copper, Ammonia…" oninput="applyFilters()" style="width:180px">
+  <input type="text" id="searchInput" placeholder="e.g. Copper, Ammonia…"
+    oninput="applyFilters()" style="width:180px">
   <div class="sep"></div>
   <label>From</label><select id="fromMonth" onchange="applyFilters()"></select>
   <label>To</label><select id="toMonth" onchange="applyFilters()"></select>
   <div class="sep"></div>
   <label>Trend</label>
   <select id="trendFilter" onchange="applyFilters()">
-    <option value="all">All</option><option value="up">Rising ↑</option>
-    <option value="down">Falling ↓</option><option value="flat">Stable →</option>
+    <option value="all">All</option>
+    <option value="up">Rising ↑</option>
+    <option value="down">Falling ↓</option>
+    <option value="flat">Stable →</option>
     <option value="new">New Entry</option>
   </select>
   <button class="btn-f" onclick="resetFilters()">Reset</button>
@@ -144,49 +155,61 @@ body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text);}
 <div id="noResults">No raw materials match your filters.</div>
 
 <script>
-// ── YOUR APPS SCRIPT URL ──────────────────────────────────────────────────────
-const APPS_URL = "https://script.google.com/macros/s/AKfycbyeF-qKOgYtb1fDjkJR1o41DjXOLp-DLx3jkvP9iFzhL9eKsyCFkvQFw7lqa3lml8E/exec";
+// ─────────────────────────────────────────────────────────────────────────────
+//  APPS SCRIPT URL
+// ─────────────────────────────────────────────────────────────────────────────
+const APPS_URL = "https://script.google.com/macros/s/AKfycby-I1Wqmh8w1CjZ5jqr49NfdjNEhXrB1gTMa3fXHjA-y-PG1mPW83UUgbAROfkd__Ld/exec";
 
-// ── FALLBACK DATA ─────────────────────────────────────────────────────────────
-const FB_MONTHS = ["Feb 2026","Apr 2026","May 2026","Jun 2026"];
-const FB_DATA = [
-  {name:"Copper Phthalocyanine Blue Crude",prices:[495,515,496.5,515]},
-  {name:"Gum Rosin",prices:[141,156,165,170]},
-  {name:"Caustic Soda Lye",prices:[42,50.25,48,47]},
-  {name:"Orthoxylene",prices:[109,139,146,152]},
-  {name:"Lynol G6",prices:[427,490,490,490]},
-  {name:"Hydrochloric Acid",prices:[2,2,2,2]},
-  {name:"Sulphuric Acid",prices:[26.4,35,36,38]},
-  {name:"Oleum",prices:[27.4,37.1,40.1,43.2]},
-  {name:"Hydrated Lime",prices:[7.2,7.25,7.25,8.5]},
-  {name:"Phthalimide",prices:[123,175,175,175]},
-  {name:"Paraformaldehyde",prices:[135,150,160,160]},
-  {name:"Isobutyl Alcohol",prices:[113.5,170.5,167,157]},
-  {name:"Methyl Isobutyl Ketone (MIBK)",prices:[null,182,168,169]},
-  {name:"Acetic Acid",prices:[null,64,68,68]},
-  {name:"2 Ethyl Hexanoic Acid",prices:[214,212,212,212]},
-  {name:"Tri Ethanolamine Lauryl Sulphate",prices:[135,135,135,136.5]},
-  {name:"Ammonia",prices:[35,35,35,35]},
-  {name:"Chloro Sulphonic Acid",prices:[null,70,73,73]},
-  {name:"PCl3 (Phosphorus Tri Chloride)",prices:[135,135,135,135]},
-  {name:"DMAPA",prices:[310,275,275,275]},
-  {name:"Thinoyl Chloride",prices:[48,50,50,50]},
-  {name:"EDTA",prices:[215,210,210,210]},
-  {name:"Sodium Hexa Meta Phosphate",prices:[170,169,169,169]},
-  {name:"Hydrogen Peroxide",prices:[37,32,32,32]},
-  {name:"Iso Propoxy Propyl Amine",prices:[575,575,575,575]},
-  {name:"Pulora I XC 21",prices:[null,265,265,265]},
-  {name:"Soda Ash Anhydrous",prices:[null,33.5,31.5,32]},
-  {name:"Propylene Oxide",prices:[124,193,208,208]},
-  {name:"Caustic Potash",prices:[108,115,115,115]},
-  {name:"H7",prices:[240,302,302,302]},
-  {name:"Phthalic Anhydride",prices:[90,150,155,155]},
-  {name:"Copper",prices:[null,null,1370,1370]},
-  {name:"Molybdenum",prices:[null,4000,4000,4000]},
-  {name:"UREA",prices:[null,null,80,80]},
-];
+// ─────────────────────────────────────────────────────────────────────────────
+//  CONVERT ANY DATE FORMAT → clean month label
+//  Handles: "Feb 2026", "February 2026", "2026-01-31T18:30:00.000Z",
+//           Date objects, Excel serial numbers
+// ─────────────────────────────────────────────────────────────────────────────
+const MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
-// ── 34 UNIQUE COLOUR PALETTES ─────────────────────────────────────────────────
+function cleanMonthLabel(val) {
+  if (!val && val !== 0) return null;
+  const s = String(val).trim();
+  if (s === "" || s === "0") return null;
+
+  // Already looks like "Feb 2026" or "April 2026" — return as-is
+  if (/^[A-Za-z]/.test(s) && s.length > 3) return s;
+
+  // ISO date string "2026-01-31T18:30:00.000Z"
+  if (/^\d{4}-\d{2}-\d{2}/.test(s)) {
+    try {
+      const d = new Date(s);
+      if (!isNaN(d.getTime())) return MON[d.getUTCMonth()] + " " + d.getUTCFullYear();
+    } catch(e) {}
+  }
+
+  // Excel serial number (e.g. 46053)
+  if (/^\d{4,6}$/.test(s)) {
+    try {
+      const d = new Date(Math.round((parseInt(s) - 25569) * 86400 * 1000));
+      if (!isNaN(d.getTime()) && d.getFullYear() > 2000)
+        return MON[d.getUTCMonth()] + " " + d.getUTCFullYear();
+    } catch(e) {}
+  }
+
+  return s; // return whatever it is
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+//  PARSE PRICE — handles numbers, strings, empty
+// ─────────────────────────────────────────────────────────────────────────────
+function parsePrice(cell) {
+  if (cell === "" || cell === null || cell === undefined) return null;
+  if (typeof cell === "number") return cell === 0 ? null : cell;
+  const s = String(cell).trim();
+  if (s === "" || s === "0") return null;
+  const n = parseFloat(s.replace(/[^0-9.\-]/g, ""));
+  return isNaN(n) || n === 0 ? null : n;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+//  34 UNIQUE COLOUR PALETTES
+// ─────────────────────────────────────────────────────────────────────────────
 const PAL=[
   {bar:"#1565C0",line:"#FF6F00",bd:"#1565C0",bg:"#E3F2FD",ft:"#0D47A1"},
   {bar:"#2E7D32",line:"#F50057",bd:"#2E7D32",bg:"#E8F5E9",ft:"#1B5E20"},
@@ -224,158 +247,164 @@ const PAL=[
   {bar:"#BF6900",line:"#0091EA",bd:"#BF6900",bg:"#FFF8E1",ft:"#7a4200"},
 ];
 
-let MONTHS=[],currentData=[],chartInstances={},_seq=0;
+let MONTHS=[], currentData=[], chartInstances={}, _seq=0;
 
-// ── DEBUG LOG ─────────────────────────────────────────────────────────────────
-function log(msg,cls=""){
-  const el=document.getElementById("debugLog");
-  const ts=new Date().toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit",second:"2-digit"});
-  const line=`[${ts}] ${msg}`;
-  const span=document.createElement("span");
-  span.className=cls?`log-${cls}`:"";
-  span.textContent=line+"\n";
-  el.appendChild(span);
-  el.scrollTop=el.scrollHeight;
-}
-function clearLog(){document.getElementById("debugLog").innerHTML="";}
-
-// ── MAIN LOADER ───────────────────────────────────────────────────────────────
-async function loadLiveData(overlay=true){
-  if(overlay){
+// ─────────────────────────────────────────────────────────────────────────────
+//  MAIN DATA LOADER
+// ─────────────────────────────────────────────────────────────────────────────
+async function loadLiveData(overlay=true) {
+  if (overlay) {
     document.getElementById("loadOverlay").classList.remove("hidden");
-    document.getElementById("loadMsg").textContent="Fetching live data from Google Sheets…";
+    document.getElementById("loadMsg").textContent = "Fetching live data from Google Sheets…";
+    document.getElementById("loadSub").textContent = "Reading your Chart Data tab via Apps Script";
   }
-  clearLog();
-  document.getElementById("reloadBtn").disabled=true;
-  document.getElementById("spinIco").classList.add("go");
-  document.getElementById("debugSummary").innerHTML="";
+  setStatus("loading","Connecting to Google Sheets…");
+  document.getElementById("reloadBtn").disabled = true;
+  document.getElementById("spinI").classList.add("go");
 
-  log("Calling Apps Script URL…","info");
-  log(APPS_URL.substring(0,80)+"…","info");
-
-  // Add timestamp to URL to bust ANY cache
-  const bustUrl = APPS_URL + (APPS_URL.includes("?")?"&":"?") + "_t=" + Date.now();
-
-  let raw="", success=false;
+  const url = APPS_URL + "?_ts=" + Date.now(); // cache buster
 
   try {
-    log("Sending fetch request (cache: no-store)…","info");
-    const resp = await fetch(bustUrl, {
-      method:"GET",
-      cache:"no-store",
-      headers:{"Cache-Control":"no-cache, no-store, must-revalidate","Pragma":"no-cache"}
-    });
+    const resp = await fetch(url, {cache:"no-store"});
+    if (!resp.ok) throw new Error("HTTP " + resp.status +
+      " — Redeploy Apps Script with 'Anyone' access");
 
-    log("HTTP response: "+resp.status+" "+resp.statusText, resp.ok?"ok":"err");
+    const raw = await resp.text();
+    if (!raw || raw.trim() === "") throw new Error("Empty response from Apps Script");
 
-    raw = await resp.text();
-    log("Response size: "+raw.length+" characters","info");
-    log("First 200 chars of response:","info");
-    log(raw.substring(0,200)+(raw.length>200?"…":""),"warn");
-
-    if(!resp.ok) throw new Error("HTTP "+resp.status);
-
-    // Try parse JSON
+    // Parse JSON
     let rows;
-    try{
-      rows=JSON.parse(raw);
-      log("✅ JSON parsed successfully — "+rows.length+" rows found","ok");
-    }catch(e){
-      throw new Error("Response is NOT valid JSON.\nGot: "+raw.substring(0,150)+
-        "\n\nFIX: Your Apps Script doGet() must return:\nContentService.createTextOutput(JSON.stringify(data)).setMimeType(ContentService.MimeType.JSON)");
+    try { rows = JSON.parse(raw); }
+    catch(e) { throw new Error("Not valid JSON. Raw: " + raw.substring(0,120)); }
+
+    if (!Array.isArray(rows) || rows.length < 2)
+      throw new Error("Expected 2D array. Got: " + JSON.stringify(rows).substring(0,80));
+
+    // ─── FIND HEADER ROW ────────────────────────────────────────────────────
+    // Your sheet: Row 0 = "Sheet updation SOP" (skip)
+    //             Row 1 = "Main Raw Material Name", "Feb 2026", "April 2026"...
+    // We find the row where column A contains "main raw material"
+    let headerRowIdx = -1;
+    for (let i = 0; i < Math.min(rows.length, 6); i++) {
+      const cellA = String(rows[i][0] || "").toLowerCase().trim();
+      if (cellA.includes("main raw material") || cellA.includes("raw material name")) {
+        headerRowIdx = i;
+        break;
+      }
     }
 
-    if(!Array.isArray(rows)||rows.length<2)
-      throw new Error("Expected array with 2+ rows, got: "+JSON.stringify(rows).substring(0,100));
-
-    const headers=rows[0].map(h=>String(h||"").trim());
-    log("Header row: "+JSON.stringify(headers),"info");
-
-    const monthCols=headers.slice(1).filter(h=>h);
-    if(monthCols.length===0) throw new Error("No month columns in header: "+JSON.stringify(headers));
-    log("Months found: "+monthCols.join(", "),"ok");
-
-    const data=[];
-    for(let i=1;i<rows.length;i++){
-      const row=rows[i];
-      const name=String(row[0]||"").trim();
-      if(!name)continue;
-      const prices=monthCols.map((_,mi)=>{
-        const cell=row[mi+1];
-        if(cell===""||cell===null||cell===undefined)return null;
-        const n=parseFloat(String(cell).replace(/[^0-9.\-]/g,""));
-        return isNaN(n)?null:n;
-      });
-      if(prices.some(p=>p!==null))data.push({name,prices});
+    // Fallback: if not found, assume row index 1
+    if (headerRowIdx === -1) {
+      console.warn("Header row not found by keyword — using row index 1 as fallback");
+      headerRowIdx = 1;
     }
 
-    if(data.length===0) throw new Error("No data rows with prices found. Check sheet tab name in Apps Script.");
+    const headerRow = rows[headerRowIdx];
 
-    log("✅ Parsed "+data.length+" RMs with prices","ok");
+    // ─── EXTRACT MONTH LABELS ────────────────────────────────────────────────
+    // Convert any format (text / ISO date / Excel serial) → clean label
+    const monthLabels = headerRow
+      .slice(1)
+      .map(h => cleanMonthLabel(h))
+      .filter(h => h !== null && h !== "");
 
-    // Log first 3 RMs to confirm values
-    data.slice(0,3).forEach(d=>{
-      log("  → "+d.name+": "+d.prices.map((p,i)=>monthCols[i]+"=₹"+(p??"-")).join(", "),"ok");
-    });
+    if (monthLabels.length === 0)
+      throw new Error("No month columns found. Header: " + JSON.stringify(headerRow));
 
-    // Update globals
-    MONTHS.length=0; monthCols.forEach(m=>MONTHS.push(m));
-    currentData=data;
+    // ─── PARSE DATA ROWS ─────────────────────────────────────────────────────
+    // Rows after headerRowIdx that have a valid RM name in col A
+    // Skip: empty rows, rows with "Om ", "Namah", "SOP", etc.
+    const skipPatterns = [
+      /^om\s/i, /namah/i, /parvatay/i, /keshav/i, /narayan/i,
+      /madhav/i, /sheet\s*updation/i, /^main\s*raw/i
+    ];
+
+    const data = [];
+    for (let i = headerRowIdx + 1; i < rows.length; i++) {
+      const row  = rows[i];
+      const name = String(row[0] || "").trim();
+      if (!name) continue;
+      if (skipPatterns.some(p => p.test(name))) continue;
+
+      const prices = monthLabels.map((_, mi) => parsePrice(row[mi + 1]));
+
+      // Only include rows that have at least one price
+      if (prices.some(p => p !== null)) {
+        data.push({ name, prices });
+      }
+    }
+
+    if (data.length === 0)
+      throw new Error("No RM rows found with prices. Check Apps Script SHEET_NAME = 'Chart Data'");
+
+    // ─── SUCCESS ─────────────────────────────────────────────────────────────
+    MONTHS.length = 0;
+    monthLabels.forEach(m => MONTHS.push(m));
+    currentData = data;
 
     populateSelects();
-    buildGrid(currentData,0,MONTHS.length-1,"","all");
+    buildGrid(currentData, 0, MONTHS.length - 1, "", "all");
 
-    document.getElementById("hBadge").textContent=data.length+" Raw Materials";
-    document.getElementById("hLive").textContent="🟢 Live";
-    document.getElementById("hLive").className="badge live";
-    document.getElementById("topSub").textContent=
-      "Base = first available price per RM  |  "+MONTHS.length+" months: "+
-      MONTHS[0]+" → "+MONTHS[MONTHS.length-1]+"  |  🟢 Auto-synced from Google Sheets";
+    document.getElementById("hBadge").textContent  = data.length + " Raw Materials";
+    document.getElementById("hLive").textContent   = "🟢 Live";
+    document.getElementById("hLive").className     = "badge live";
+    document.getElementById("topSub").textContent  =
+      "All RM per kg rate  |  Base = first available price  |  " +
+      MONTHS.length + " months: " + MONTHS[0] + " → " + MONTHS[MONTHS.length-1] +
+      "  |  🟢 Auto-synced from Google Sheets";
 
-    const ts=new Date().toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit",second:"2-digit"})
-              +"  "+new Date().toLocaleDateString("en-IN");
-    document.getElementById("lastTs").textContent="Last refreshed: "+ts;
+    const ts = new Date().toLocaleTimeString("en-IN",
+      {hour:"2-digit",minute:"2-digit",second:"2-digit"}) +
+      "  " + new Date().toLocaleDateString("en-IN");
 
-    document.getElementById("debugSummary").innerHTML=
-      `<div class="ds">✅ <b>${data.length}</b> RMs loaded</div>
-       <div class="ds">📅 <b>${monthCols.length}</b> months: ${monthCols.join(" · ")}</div>
-       <div class="ds">🕐 <b>${ts}</b></div>`;
-
-    success=true;
+    setStatus("ok", "✅ Live — " + data.length + " RMs loaded  |  Months: " +
+      MONTHS.join(" · "));
+    document.getElementById("statusTs").textContent = "Refreshed: " + ts;
 
   } catch(err) {
-    log("❌ ERROR: "+err.message,"err");
-    log("Using fallback screenshot data…","warn");
+    console.error("Live load failed:", err.message);
+    setStatus("err", "❌ " + err.message);
+    document.getElementById("hBadge").textContent = "⚠️ Error";
+    document.getElementById("hLive").textContent  = "❌ Offline";
+    document.getElementById("hLive").className    = "badge warn";
+    document.getElementById("topSub").textContent = "❌ Could not load — check Apps Script";
 
-    MONTHS.length=0; FB_MONTHS.forEach(m=>MONTHS.push(m));
-    currentData=FB_DATA;
-    populateSelects();
-    buildGrid(currentData,0,MONTHS.length-1,"","all");
-
-    document.getElementById("hBadge").textContent=FB_DATA.length+" RMs (Fallback)";
-    document.getElementById("hLive").textContent="⚠️ Offline";
-    document.getElementById("hLive").className="badge warn";
-    document.getElementById("topSub").textContent="⚠️ Could not load live data — showing fallback";
-
-    document.getElementById("debugSummary").innerHTML=
-      `<div class="ds" style="color:#f85149;">❌ Live load failed — showing fallback data</div>
-       <div class="ds" style="color:#d29922;">Fix: Check error above ↑ in the debug log</div>`;
+    document.getElementById("chartGrid").innerHTML = `
+      <div class="err-box">
+        <h3>❌ Could not load data from Google Sheets</h3>
+        <p>
+          <b>Error:</b> ${err.message}<br><br>
+          <b>Quick checklist:</b><br>
+          1. Open Google Sheet → Extensions → Apps Script<br>
+          2. Make sure code has <code>var SHEET_NAME = "Chart Data"</code><br>
+          3. Click <b>Deploy → New deployment → Web app → Anyone → Deploy</b><br>
+          4. Also try opening the Apps Script URL directly in a new tab to verify it returns JSON
+        </p>
+      </div>`;
   }
 
-  document.getElementById("reloadBtn").disabled=false;
-  document.getElementById("spinIco").classList.remove("go");
+  document.getElementById("reloadBtn").disabled = false;
+  document.getElementById("spinI").classList.remove("go");
   document.getElementById("loadOverlay").classList.add("hidden");
 }
 
-function populateSelects(){
-  ["fromMonth","toMonth"].forEach(id=>{
-    const s=document.getElementById(id);
-    s.innerHTML=MONTHS.map((m,i)=>`<option value="${i}">${m}</option>`).join("");
-  });
-  document.getElementById("toMonth").value=MONTHS.length-1;
+function setStatus(type, msg) {
+  document.getElementById("sDot").className = "status-dot " + type;
+  const el = document.getElementById("statusMsg");
+  el.textContent = msg; el.className = type;
 }
 
-// ── CALCULATIONS ──────────────────────────────────────────────────────────────
+function populateSelects() {
+  ["fromMonth","toMonth"].forEach(id => {
+    const s = document.getElementById(id);
+    s.innerHTML = MONTHS.map((m,i) => `<option value="${i}">${m}</option>`).join("");
+  });
+  document.getElementById("toMonth").value = MONTHS.length - 1;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+//  CALCULATION HELPERS
+// ─────────────────────────────────────────────────────────────────────────────
 function getBase(p){for(let v of p)if(v!==null)return v;return null;}
 function calcIdx(p,b){return p===null||b===null?null:+(p/b*100).toFixed(1);}
 function calcMoM(prices,i){
@@ -397,6 +426,7 @@ function trendLbl(rm,from,to){
 }
 function mCls(v){return v===null?"flat":v>0?"up":v<0?"dn":"flat";}
 
+// roundRect polyfill
 if(!CanvasRenderingContext2D.prototype.roundRect){
   CanvasRenderingContext2D.prototype.roundRect=function(x,y,w,h,r){
     this.beginPath();this.moveTo(x+r,y);this.lineTo(x+w-r,y);
@@ -407,6 +437,9 @@ if(!CanvasRenderingContext2D.prototype.roundRect){
   };
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+//  PILL LABEL PLUGIN
+// ─────────────────────────────────────────────────────────────────────────────
 Chart.register({id:"pills",afterDatasetsDraw(chart){
   const{ctx}=chart,p=chart._p||{bar:"#1F6DB5",line:"#E24B4A"};
   chart.data.datasets.forEach((ds,di)=>{
@@ -427,7 +460,9 @@ Chart.register({id:"pills",afterDatasetsDraw(chart){
   });
 }});
 
-// ── RENDER CARD ───────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
+//  RENDER ONE CARD
+// ─────────────────────────────────────────────────────────────────────────────
 function renderCard(rm,pi,from,to,cardEl){
   const p=PAL[pi%PAL.length];
   const months=MONTHS.slice(from,to+1);
@@ -439,39 +474,47 @@ function renderCard(rm,pi,from,to,cardEl){
   const tCls={up:"trend-up",down:"trend-down",flat:"trend-flat",new:"trend-new"}[trend];
   const cid="cv_"+(++_seq);
   cardEl.style.borderTopColor=p.bd;
+
   const kpi=prices.map((v,i)=>{
     const mom=moms[i];
     const momTxt=i===0?"Base":(mom===null?"N/A":(mom>=0?"+":"")+mom+"%");
-    const ml=months[i].replace(" 2026","").replace(" 20","'");
-    return`<div class="kpi"><div class="kpi-m">${ml}</div>
+    return`<div class="kpi">
+      <div class="kpi-m">${months[i]}</div>
       <div class="kpi-v${v===null?" na":""}">${v===null?"N/A":"₹"+v}</div>
-      <div class="kpi-d ${i===0?"base":mCls(mom)}">${momTxt}</div></div>`;
+      <div class="kpi-d ${i===0?"base":mCls(mom)}">${momTxt}</div>
+    </div>`;
   }).join("");
+
   cardEl.innerHTML=`
     <div class="card-head">
-      <div><div class="rm-name">${rm.name}</div>
+      <div>
+        <div class="rm-name">${rm.name}</div>
         <div class="rm-sub">Base ₹${base??'—'} | ${months[0]} → ${months[months.length-1]}</div>
       </div>
-      <div class="trend-badge ${tCls}" style="background:${p.bg};color:${p.ft};">${trendLbl(rm,from,to)}</div>
+      <div class="trend-badge ${tCls}" style="background:${p.bg};color:${p.ft};">
+        ${trendLbl(rm,from,to)}</div>
     </div>
     <div class="kpi-row" style="grid-template-columns:repeat(${months.length},1fr);">${kpi}</div>
     <div class="canvas-wrap">
-      ${base!==null?`<canvas id="${cid}" height="165"></canvas>`
-                   :`<div class="no-data">No data for selected range</div>`}
+      ${base!==null
+        ? `<canvas id="${cid}" height="165"></canvas>`
+        : `<div class="no-data">No data for selected range</div>`}
     </div>
     ${base!==null?`<div class="card-legend">
       <div class="leg"><div class="leg-box" style="background:${p.bar}"></div>Index vs Base (%)</div>
       <div class="leg"><div class="leg-line" style="background:${p.line}"></div>MoM Change (%)</div>
     </div>`:""}`;
+
   if(base===null)return;
   const cvEl=document.getElementById(cid);if(!cvEl)return;
+
   const c=new Chart(cvEl,{
     data:{labels:months,datasets:[
-      {type:"bar",label:"Index",data:indices,
+      {type:"bar",label:"Index vs Base (%)",data:indices,
         backgroundColor:indices.map(v=>v===null?"rgba(0,0,0,0)":p.bar),
         hoverBackgroundColor:indices.map(v=>v===null?"rgba(0,0,0,0)":p.bar+"cc"),
         borderRadius:4,yAxisID:"y",order:2},
-      {type:"line",label:"MoM",data:moms,
+      {type:"line",label:"MoM Change (%)",data:moms,
         borderColor:p.line,backgroundColor:p.line+"18",borderWidth:2.5,
         pointBackgroundColor:moms.map(v=>v===null?"transparent":p.line),
         pointBorderColor:moms.map(v=>v===null?"transparent":"#fff"),
@@ -486,20 +529,28 @@ function renderCard(rm,pi,from,to,cardEl){
             title:items=>{const i=items[0].dataIndex;
               return months[i]+"  —  "+(prices[i]!==null?"₹"+prices[i]:"N/A");},
             label:item=>{
-              if(item.datasetIndex===0)return item.raw!==null?" Index: "+item.raw+"%":" Index: N/A";
-              return item.raw===null?" MoM: —":" MoM: "+(item.raw>=0?"+":"")+item.raw+"%";}}}},
+              if(item.datasetIndex===0)
+                return item.raw!==null?" Index: "+item.raw+"%":" Index: N/A";
+              return item.raw===null?" MoM: —":
+                " MoM: "+(item.raw>=0?"+":"")+item.raw+"%";}}}},
       scales:{
         x:{grid:{display:false},ticks:{font:{size:10,weight:"600"},color:"#1a2340"}},
-        y:{position:"left",title:{display:true,text:"Index (%)",color:p.bar,font:{size:9}},
-          ticks:{callback:v=>v+"%",color:p.bar,font:{size:9}},grid:{color:"rgba(0,0,0,0.06)"}},
-        y2:{position:"right",title:{display:true,text:"MoM %",color:p.line,font:{size:9}},
-          ticks:{callback:v=>(v>=0?"+":"")+v+"%",color:p.line,font:{size:9}},grid:{display:false}}},
+        y:{position:"left",
+          title:{display:true,text:"Index (%)",color:p.bar,font:{size:9}},
+          ticks:{callback:v=>v+"%",color:p.bar,font:{size:9}},
+          grid:{color:"rgba(0,0,0,0.06)"}},
+        y2:{position:"right",
+          title:{display:true,text:"MoM %",color:p.line,font:{size:9}},
+          ticks:{callback:v=>(v>=0?"+":"")+v+"%",color:p.line,font:{size:9}},
+          grid:{display:false}}},
       animation:{duration:400}}
   });
-  c._p=p;chartInstances[cid]=c;
+  c._p=p; chartInstances[cid]=c;
 }
 
-// ── GRID ──────────────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
+//  BUILD GRID
+// ─────────────────────────────────────────────────────────────────────────────
 function buildGrid(data,from,to,search,trendF){
   const grid=document.getElementById("chartGrid");
   Object.values(chartInstances).forEach(c=>c.destroy());
@@ -516,7 +567,8 @@ function buildGrid(data,from,to,search,trendF){
     card.className="chart-card";grid.appendChild(card);
     renderCard(rm,pi,from,to,card);pi++;shown++;
   });
-  document.getElementById("matchCount").textContent=shown+" RM"+(shown!==1?"s":"")+" shown";
+  document.getElementById("matchCount").textContent=
+    shown+" RM"+(shown!==1?"s":"")+" shown";
   document.getElementById("noResults").style.display=shown===0?"block":"none";
 }
 
@@ -536,6 +588,9 @@ function resetFilters(){
   buildGrid(currentData,0,MONTHS.length-1,"","all");
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+//  INIT
+// ─────────────────────────────────────────────────────────────────────────────
 loadLiveData(true);
 </script>
 </body>
