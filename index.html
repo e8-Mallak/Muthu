@@ -10,22 +10,15 @@
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text);}
 
-/* ── loading overlay ── */
-#loadOverlay{position:fixed;inset:0;background:rgba(31,56,100,.95);
+#loadOverlay{position:fixed;inset:0;background:rgba(31,56,100,.96);
   display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .5s;}
 #loadOverlay.hidden{opacity:0;pointer-events:none;}
 .spinner{width:52px;height:52px;border:4px solid rgba(255,255,255,.2);
   border-top-color:#fff;border-radius:50%;animation:spin 1s linear infinite;margin-bottom:22px;}
 @keyframes spin{to{transform:rotate(360deg);}}
 #loadMsg{color:#fff;font-size:15px;font-weight:700;text-align:center;}
-#loadSub{color:rgba(255,255,255,.55);font-size:12px;margin-top:8px;text-align:center;}
-.load-steps{margin-top:20px;display:flex;flex-direction:column;gap:6px;align-items:flex-start;}
-.load-step{color:rgba(255,255,255,.5);font-size:11px;display:flex;align-items:center;gap:8px;}
-.load-step.done{color:#69F0AE;}
-.load-step.active{color:#fff;}
-.step-dot{width:8px;height:8px;border-radius:50%;background:currentColor;flex-shrink:0;}
+#loadSub{color:rgba(255,255,255,.6);font-size:12px;margin-top:8px;text-align:center;max-width:360px;}
 
-/* ── topbar ── */
 .topbar{background:linear-gradient(120deg,#1F3864 0%,#1b5496 100%);
   padding:16px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
 .topbar h1{color:#fff;font-size:17px;font-weight:700;}
@@ -34,9 +27,25 @@ body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text);}
 .badge{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);
   border-radius:20px;padding:5px 14px;color:#fff;font-size:11px;font-weight:600;}
 .badge.live{background:rgba(39,200,120,.25);border-color:rgba(39,200,120,.5);}
-.badge.err{background:rgba(220,53,69,.25);border-color:rgba(220,53,69,.5);}
+.badge.warn{background:rgba(255,193,7,.25);border-color:rgba(255,193,7,.5);}
 
-/* ── filter bar ── */
+/* debug panel */
+.debug-panel{background:#0d1117;border-bottom:3px solid #30363d;padding:14px 20px;}
+.debug-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px;}
+.debug-header h3{color:#58a6ff;font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;}
+.debug-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.btn-reload{padding:6px 16px;background:#238636;color:#fff;border:none;
+  border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;}
+.btn-reload:hover{background:#2ea043;}
+.btn-reload:disabled{background:#444;cursor:not-allowed;}
+.spin-ico{display:inline-block;}.spin-ico.go{animation:spin .8s linear infinite;}
+.debug-log{background:#161b22;border:1px solid #30363d;border-radius:6px;
+  padding:12px 14px;font-size:11px;font-family:'Courier New',monospace;
+  color:#c9d1d9;max-height:160px;overflow-y:auto;line-height:1.6;white-space:pre-wrap;word-break:break-all;}
+.log-ok{color:#3fb950;}.log-err{color:#f85149;}.log-warn{color:#d29922;}.log-info{color:#58a6ff;}
+.debug-summary{margin-top:8px;display:flex;gap:16px;flex-wrap:wrap;}
+.ds{font-size:11px;color:#8b949e;}.ds b{color:#c9d1d9;}
+
 .filter-bar{background:#fff;border-bottom:1px solid var(--border);
   padding:12px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
 .filter-bar label{font-size:11px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.5px;}
@@ -45,31 +54,22 @@ body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text);}
   font-size:12px;color:var(--text);background:var(--bg);outline:none;cursor:pointer;}
 .filter-bar select:focus,.filter-bar input[type=text]:focus{border-color:var(--blue);}
 .btn-f{padding:6px 16px;background:var(--navy);color:#fff;border:none;
-  border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;transition:background .2s;}
+  border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;}
 .btn-f:hover{background:var(--blue);}
-.btn-refresh{padding:6px 16px;background:#27652a;color:#fff;border:none;
-  border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;transition:background .2s;
-  display:flex;align-items:center;gap:5px;}
-.btn-refresh:hover{background:#1e4d20;}
-.btn-refresh.spinning .ri{display:inline-block;animation:spin .8s linear infinite;}
 .sep{width:1px;height:24px;background:var(--border);}
 #matchCount{font-size:11px;color:var(--sub);margin-left:auto;}
 
-/* ── grid ── */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));
   gap:18px;padding:20px 20px 32px;}
-.chart-card{background:var(--card);border:1px solid var(--border);
-  border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(31,56,100,.06);
+.chart-card{background:var(--card);border:1px solid var(--border);border-radius:10px;
+  overflow:hidden;box-shadow:0 2px 8px rgba(31,56,100,.06);
   transition:box-shadow .2s;border-top:4px solid #ccc;}
 .chart-card:hover{box-shadow:0 6px 22px rgba(31,56,100,.14);}
-
 .card-head{padding:11px 14px 9px;border-bottom:1px solid var(--border);
   display:flex;align-items:flex-start;justify-content:space-between;gap:8px;}
 .rm-name{font-size:12px;font-weight:700;color:var(--navy);line-height:1.3;}
 .rm-sub{font-size:10px;color:var(--sub);margin-top:2px;}
-.trend-badge{flex-shrink:0;padding:3px 9px;border-radius:12px;
-  font-size:10px;font-weight:700;white-space:nowrap;}
-
+.trend-badge{flex-shrink:0;padding:3px 9px;border-radius:12px;font-size:10px;font-weight:700;white-space:nowrap;}
 .kpi-row{display:grid;border-bottom:1px solid var(--border);}
 .kpi{padding:7px 6px;text-align:center;border-right:1px solid #eef1f6;}
 .kpi:last-child{border-right:none;}
@@ -79,59 +79,28 @@ body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text);}
 .kpi-d{font-size:9px;margin-top:1px;}
 .kpi-d.up{color:#C0392B;}.kpi-d.dn{color:#27652a;}
 .kpi-d.flat{color:var(--sub);}.kpi-d.base{color:var(--blue);}
-
 .canvas-wrap{padding:10px 10px 4px;height:185px;position:relative;}
-.no-data{display:flex;align-items:center;justify-content:center;
-  height:100%;font-size:12px;color:#bbb;}
-
+.no-data{display:flex;align-items:center;justify-content:center;height:100%;font-size:12px;color:#bbb;}
 .card-legend{display:flex;gap:14px;padding:0 12px 8px;flex-wrap:wrap;}
 .leg{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--sub);}
 .leg-box{width:10px;height:10px;border-radius:2px;}
 .leg-line{width:18px;height:2.5px;border-radius:2px;}
-
-/* ── status bar ── */
-.status-bar{background:#fff;border-top:1px solid var(--border);
-  padding:12px 24px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
-.status-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
-.status-dot.ok{background:#27a745;box-shadow:0 0 6px rgba(39,167,69,.5);}
-.status-dot.err{background:#dc3545;}
-.status-dot.loading{background:#ffc107;animation:pulse 1s infinite;}
-@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
-#statusText{font-size:12px;color:var(--sub);}
-#statusText.ok{color:#27652a;font-weight:600;}
-#statusText.err{color:#C0392B;font-weight:600;}
-#lastRefresh{font-size:11px;color:#aaa;margin-left:auto;}
-
-/* ── error panel ── */
-#errorPanel{display:none;margin:16px 20px;background:#fff8f8;border:1px solid #f5c6cb;
-  border-radius:8px;padding:16px 20px;}
-#errorPanel h3{color:#721c24;font-size:13px;margin-bottom:8px;}
-#errorPanel p{font-size:12px;color:#555;line-height:1.6;}
-#errorPanel code{background:#f0f0f0;padding:2px 6px;border-radius:4px;font-size:11px;}
-
 #noResults{display:none;text-align:center;padding:48px 20px;color:var(--sub);font-size:14px;}
 @media(max-width:520px){.grid{grid-template-columns:1fr;padding:12px;}.topbar{padding:12px 16px;}}
 </style>
 </head>
 <body>
 
-<!-- Loading Overlay -->
 <div id="loadOverlay">
   <div class="spinner"></div>
-  <div id="loadMsg">Connecting to Google Sheets…</div>
-  <div id="loadSub">Fetching live RM prices via Apps Script</div>
-  <div class="load-steps">
-    <div class="load-step active" id="step1"><div class="step-dot"></div>Calling Apps Script web app…</div>
-    <div class="load-step" id="step2"><div class="step-dot"></div>Parsing sheet data…</div>
-    <div class="load-step" id="step3"><div class="step-dot"></div>Rendering 34 charts…</div>
-  </div>
+  <div id="loadMsg">Fetching live data from Google Sheets…</div>
+  <div id="loadSub">Calling Apps Script — this takes 2–4 seconds</div>
 </div>
 
-<!-- Top Bar -->
 <div class="topbar">
   <div>
     <h1>Mallak Specialties — RM Cost Dashboard</h1>
-    <p id="topSubtitle">Loading live data from Google Sheets…</p>
+    <p id="topSub">Connecting to Google Sheets…</p>
   </div>
   <div class="topbar-right">
     <div class="badge" id="hBadge">Loading…</div>
@@ -139,339 +108,295 @@ body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text);}
   </div>
 </div>
 
-<!-- Filter Bar -->
+<!-- Debug Panel — shows exactly what Apps Script returns -->
+<div class="debug-panel">
+  <div class="debug-header">
+    <h3>📡 Live Data Feed — Google Sheets ↔ Dashboard</h3>
+    <div class="debug-actions">
+      <button class="btn-reload" id="reloadBtn" onclick="loadLiveData(false)">
+        <span class="spin-ico" id="spinIco">🔄</span> Reload from Sheet
+      </button>
+      <span id="lastTs" style="color:#8b949e;font-size:11px;"></span>
+    </div>
+  </div>
+  <div class="debug-log" id="debugLog">Initialising…</div>
+  <div class="debug-summary" id="debugSummary"></div>
+</div>
+
 <div class="filter-bar">
   <label>Search RM</label>
-  <input type="text" id="searchInput" placeholder="e.g. Copper, Ammonia…"
-    oninput="applyFilters()" style="width:180px">
+  <input type="text" id="searchInput" placeholder="e.g. Copper, Ammonia…" oninput="applyFilters()" style="width:180px">
   <div class="sep"></div>
-  <label>From</label>
-  <select id="fromMonth" onchange="applyFilters()"></select>
-  <label>To</label>
-  <select id="toMonth" onchange="applyFilters()"></select>
+  <label>From</label><select id="fromMonth" onchange="applyFilters()"></select>
+  <label>To</label><select id="toMonth" onchange="applyFilters()"></select>
   <div class="sep"></div>
   <label>Trend</label>
   <select id="trendFilter" onchange="applyFilters()">
-    <option value="all">All</option>
-    <option value="up">Rising ↑</option>
-    <option value="down">Falling ↓</option>
-    <option value="flat">Stable →</option>
+    <option value="all">All</option><option value="up">Rising ↑</option>
+    <option value="down">Falling ↓</option><option value="flat">Stable →</option>
     <option value="new">New Entry</option>
   </select>
-  <button class="btn-refresh" id="refreshBtn" onclick="refreshData()">
-    <span class="ri">🔄</span> Refresh
-  </button>
   <button class="btn-f" onclick="resetFilters()">Reset</button>
   <span id="matchCount"></span>
 </div>
 
-<!-- Error Panel -->
-<div id="errorPanel">
-  <h3>⚠️ Could not load live data from Google Sheets</h3>
-  <p id="errorDetail"></p>
-</div>
-
-<!-- Chart Grid -->
 <div class="grid" id="chartGrid"></div>
 <div id="noResults">No raw materials match your filters.</div>
 
-<!-- Status Bar -->
-<div class="status-bar">
-  <div class="status-dot loading" id="statusDot"></div>
-  <span id="statusText">Connecting…</span>
-  <span id="lastRefresh"></span>
-</div>
-
 <script>
-// ── YOUR APPS SCRIPT WEB APP URL ─────────────────────────────────────────────
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyoqaft4ZqlDcUHYBBI1f5INuxhinDps9bdtnGTu_-W5wvR3ULk7WUGx3VE6L8kp7fh/exec";
+// ── YOUR APPS SCRIPT URL ──────────────────────────────────────────────────────
+const APPS_URL = "https://script.google.com/macros/s/AKfycbyeF-qKOgYtb1fDjkJR1o41DjXOLp-DLx3jkvP9iFzhL9eKsyCFkvQFw7lqa3lml8E/exec";
 
-// ── FALLBACK DATA (screenshot) — shown if sheet unreachable ──────────────────
-const FALLBACK_MONTHS = ["Feb 2026","Apr 2026","May 2026","Jun 2026"];
-const FALLBACK_DATA = [
-  {name:"Copper Phthalocyanine Blue Crude", prices:[495.00,515.00,496.5,515.00]},
-  {name:"Gum Rosin",                        prices:[141.00,156.00,165.0,170.00]},
-  {name:"Caustic Soda Lye",                 prices:[42.00, 50.25, 48.0, 47.00]},
-  {name:"Orthoxylene",                       prices:[109.00,139.00,146.0,152.00]},
-  {name:"Lynol G6",                          prices:[427.00,490.00,490.0,490.00]},
-  {name:"Hydrochloric Acid",                 prices:[2.00,  2.00,  2.0,  2.00]},
-  {name:"Sulphuric Acid",                    prices:[26.40, 35.00, 36.0, 38.00]},
-  {name:"Oleum",                             prices:[27.40, 37.10, 40.1, 43.20]},
-  {name:"Hydrated Lime",                     prices:[7.20,  7.25,  7.25, 8.50]},
-  {name:"Phthalimide",                       prices:[123.00,175.00,175.0,175.00]},
-  {name:"Paraformaldehyde",                  prices:[135.00,150.00,160.0,160.00]},
-  {name:"Isobutyl Alcohol",                  prices:[113.50,170.50,167.0,157.00]},
-  {name:"Methyl Isobutyl Ketone (MIBK)",     prices:[null,  182.00,168.0,169.00]},
-  {name:"Acetic Acid",                       prices:[null,   64.00, 68.0, 68.00]},
-  {name:"2 Ethyl Hexanoic Acid",             prices:[214.00,212.00,212.0,212.00]},
-  {name:"Tri Ethanolamine Lauryl Sulphate",  prices:[135.00,135.00,135.0,136.50]},
-  {name:"Ammonia",                           prices:[35.00, 35.00, 35.0, 35.00]},
-  {name:"Chloro Sulphonic Acid",             prices:[null,  70.00, 73.0, 73.00]},
-  {name:"PCl3 (Phosphorus Tri Chloride)",    prices:[135.00,135.00,135.0,135.00]},
-  {name:"DMAPA",                             prices:[310.00,275.00,275.0,275.00]},
-  {name:"Thinoyl Chloride",                  prices:[48.00, 50.00, 50.0, 50.00]},
-  {name:"EDTA",                              prices:[215.00,210.00,210.0,210.00]},
-  {name:"Sodium Hexa Meta Phosphate",        prices:[170.00,169.00,169.0,169.00]},
-  {name:"Hydrogen Peroxide",                 prices:[37.00, 32.00, 32.0, 32.00]},
-  {name:"Iso Propoxy Propyl Amine",          prices:[575.00,575.00,575.0,575.00]},
-  {name:"Pulora I XC 21",                    prices:[null,  265.00,265.0,265.00]},
-  {name:"Soda Ash Anhydrous",                prices:[null,  33.50, 31.5, 32.00]},
-  {name:"Propylene Oxide",                   prices:[124.00,193.00,208.0,208.00]},
-  {name:"Caustic Potash",                    prices:[108.00,115.00,115.0,115.00]},
-  {name:"H7",                                prices:[240.00,302.00,302.0,302.00]},
-  {name:"Phthalic Anhydride",                prices:[90.00, 150.00,155.0,155.00]},
-  {name:"Copper",                            prices:[null,  null, 1370.0,1370.00]},
-  {name:"Molybdenum",                        prices:[null,  4000.0,4000.0,4000.00]},
-  {name:"UREA",                              prices:[null,  null,  80.0, 80.00]},
+// ── FALLBACK DATA ─────────────────────────────────────────────────────────────
+const FB_MONTHS = ["Feb 2026","Apr 2026","May 2026","Jun 2026"];
+const FB_DATA = [
+  {name:"Copper Phthalocyanine Blue Crude",prices:[495,515,496.5,515]},
+  {name:"Gum Rosin",prices:[141,156,165,170]},
+  {name:"Caustic Soda Lye",prices:[42,50.25,48,47]},
+  {name:"Orthoxylene",prices:[109,139,146,152]},
+  {name:"Lynol G6",prices:[427,490,490,490]},
+  {name:"Hydrochloric Acid",prices:[2,2,2,2]},
+  {name:"Sulphuric Acid",prices:[26.4,35,36,38]},
+  {name:"Oleum",prices:[27.4,37.1,40.1,43.2]},
+  {name:"Hydrated Lime",prices:[7.2,7.25,7.25,8.5]},
+  {name:"Phthalimide",prices:[123,175,175,175]},
+  {name:"Paraformaldehyde",prices:[135,150,160,160]},
+  {name:"Isobutyl Alcohol",prices:[113.5,170.5,167,157]},
+  {name:"Methyl Isobutyl Ketone (MIBK)",prices:[null,182,168,169]},
+  {name:"Acetic Acid",prices:[null,64,68,68]},
+  {name:"2 Ethyl Hexanoic Acid",prices:[214,212,212,212]},
+  {name:"Tri Ethanolamine Lauryl Sulphate",prices:[135,135,135,136.5]},
+  {name:"Ammonia",prices:[35,35,35,35]},
+  {name:"Chloro Sulphonic Acid",prices:[null,70,73,73]},
+  {name:"PCl3 (Phosphorus Tri Chloride)",prices:[135,135,135,135]},
+  {name:"DMAPA",prices:[310,275,275,275]},
+  {name:"Thinoyl Chloride",prices:[48,50,50,50]},
+  {name:"EDTA",prices:[215,210,210,210]},
+  {name:"Sodium Hexa Meta Phosphate",prices:[170,169,169,169]},
+  {name:"Hydrogen Peroxide",prices:[37,32,32,32]},
+  {name:"Iso Propoxy Propyl Amine",prices:[575,575,575,575]},
+  {name:"Pulora I XC 21",prices:[null,265,265,265]},
+  {name:"Soda Ash Anhydrous",prices:[null,33.5,31.5,32]},
+  {name:"Propylene Oxide",prices:[124,193,208,208]},
+  {name:"Caustic Potash",prices:[108,115,115,115]},
+  {name:"H7",prices:[240,302,302,302]},
+  {name:"Phthalic Anhydride",prices:[90,150,155,155]},
+  {name:"Copper",prices:[null,null,1370,1370]},
+  {name:"Molybdenum",prices:[null,4000,4000,4000]},
+  {name:"UREA",prices:[null,null,80,80]},
 ];
 
-// ── 34 UNIQUE COLOUR PALETTES ────────────────────────────────────────────────
-const PALETTES = [
-  {bar:"#1565C0",line:"#FF6F00",border:"#1565C0",badgeBg:"#E3F2FD",badgeFt:"#0D47A1"},
-  {bar:"#2E7D32",line:"#F50057",border:"#2E7D32",badgeBg:"#E8F5E9",badgeFt:"#1B5E20"},
-  {bar:"#6A1B9A",line:"#00BFA5",border:"#6A1B9A",badgeBg:"#F3E5F5",badgeFt:"#4A148C"},
-  {bar:"#C62828",line:"#FDD835",border:"#C62828",badgeBg:"#FFEBEE",badgeFt:"#B71C1C"},
-  {bar:"#00695C",line:"#E64A19",border:"#00695C",badgeBg:"#E0F2F1",badgeFt:"#004D40"},
-  {bar:"#F57F17",line:"#283593",border:"#F57F17",badgeBg:"#FFFDE7",badgeFt:"#E65100"},
-  {bar:"#37474F",line:"#E91E63",border:"#37474F",badgeBg:"#ECEFF1",badgeFt:"#263238"},
-  {bar:"#558B2F",line:"#6200EA",border:"#558B2F",badgeBg:"#F1F8E9",badgeFt:"#33691E"},
-  {bar:"#00838F",line:"#D84315",border:"#00838F",badgeBg:"#E0F7FA",badgeFt:"#006064"},
-  {bar:"#4527A0",line:"#00C853",border:"#4527A0",badgeBg:"#EDE7F6",badgeFt:"#311B92"},
-  {bar:"#AD1457",line:"#00ACC1",border:"#AD1457",badgeBg:"#FCE4EC",badgeFt:"#880E4F"},
-  {bar:"#1976D2",line:"#388E3C",border:"#1976D2",badgeBg:"#E3F2FD",badgeFt:"#0D47A1"},
-  {bar:"#E65100",line:"#1A237E",border:"#E65100",badgeBg:"#FBE9E7",badgeFt:"#BF360C"},
-  {bar:"#00796B",line:"#C2185B",border:"#00796B",badgeBg:"#E0F2F1",badgeFt:"#004D40"},
-  {bar:"#283593",line:"#F9A825",border:"#283593",badgeBg:"#E8EAF6",badgeFt:"#1A237E"},
-  {bar:"#BF360C",line:"#0097A7",border:"#BF360C",badgeBg:"#FBE9E7",badgeFt:"#870000"},
-  {bar:"#1B5E20",line:"#FF4081",border:"#1B5E20",badgeBg:"#E8F5E9",badgeFt:"#003300"},
-  {bar:"#880E4F",line:"#69F0AE",border:"#880E4F",badgeBg:"#FCE4EC",badgeFt:"#560027"},
-  {bar:"#0277BD",line:"#FF6D00",border:"#0277BD",badgeBg:"#E1F5FE",badgeFt:"#01579B"},
-  {bar:"#33691E",line:"#AA00FF",border:"#33691E",badgeBg:"#F1F8E9",badgeFt:"#1B4000"},
-  {bar:"#4E342E",line:"#00E676",border:"#4E342E",badgeBg:"#EFEBE9",badgeFt:"#3E2723"},
-  {bar:"#006064",line:"#FF1744",border:"#006064",badgeBg:"#E0F7FA",badgeFt:"#003D40"},
-  {bar:"#4A148C",line:"#FFAB00",border:"#4A148C",badgeBg:"#F3E5F5",badgeFt:"#12005E"},
-  {bar:"#01579B",line:"#76FF03",border:"#01579B",badgeBg:"#E1F5FE",badgeFt:"#002f6c"},
-  {bar:"#827717",line:"#E040FB",border:"#827717",badgeBg:"#F9FBE7",badgeFt:"#524c00"},
-  {bar:"#B71C1C",line:"#00BFA5",border:"#B71C1C",badgeBg:"#FFEBEE",badgeFt:"#7F0000"},
-  {bar:"#0D47A1",line:"#FF6F00",border:"#0D47A1",badgeBg:"#E3F2FD",badgeFt:"#002171"},
-  {bar:"#004D40",line:"#FF4081",border:"#004D40",badgeBg:"#E0F2F1",badgeFt:"#00251a"},
-  {bar:"#263238",line:"#FFEA00",border:"#263238",badgeBg:"#ECEFF1",badgeFt:"#000a12"},
-  {bar:"#870000",line:"#00E5FF",border:"#870000",badgeBg:"#FFEBEE",badgeFt:"#4a0000"},
-  {bar:"#1A237E",line:"#F4511E",border:"#1A237E",badgeBg:"#E8EAF6",badgeFt:"#000051"},
-  {bar:"#006400",line:"#FF8F00",border:"#006400",badgeBg:"#E8F5E9",badgeFt:"#003000"},
-  {bar:"#7B1FA2",line:"#1DE9B6",border:"#7B1FA2",badgeBg:"#F3E5F5",badgeFt:"#4a0072"},
-  {bar:"#BF6900",line:"#0091EA",border:"#BF6900",badgeBg:"#FFF8E1",badgeFt:"#7a4200"},
+// ── 34 UNIQUE COLOUR PALETTES ─────────────────────────────────────────────────
+const PAL=[
+  {bar:"#1565C0",line:"#FF6F00",bd:"#1565C0",bg:"#E3F2FD",ft:"#0D47A1"},
+  {bar:"#2E7D32",line:"#F50057",bd:"#2E7D32",bg:"#E8F5E9",ft:"#1B5E20"},
+  {bar:"#6A1B9A",line:"#00BFA5",bd:"#6A1B9A",bg:"#F3E5F5",ft:"#4A148C"},
+  {bar:"#C62828",line:"#FDD835",bd:"#C62828",bg:"#FFEBEE",ft:"#B71C1C"},
+  {bar:"#00695C",line:"#E64A19",bd:"#00695C",bg:"#E0F2F1",ft:"#004D40"},
+  {bar:"#F57F17",line:"#283593",bd:"#F57F17",bg:"#FFFDE7",ft:"#E65100"},
+  {bar:"#37474F",line:"#E91E63",bd:"#37474F",bg:"#ECEFF1",ft:"#263238"},
+  {bar:"#558B2F",line:"#6200EA",bd:"#558B2F",bg:"#F1F8E9",ft:"#33691E"},
+  {bar:"#00838F",line:"#D84315",bd:"#00838F",bg:"#E0F7FA",ft:"#006064"},
+  {bar:"#4527A0",line:"#00C853",bd:"#4527A0",bg:"#EDE7F6",ft:"#311B92"},
+  {bar:"#AD1457",line:"#00ACC1",bd:"#AD1457",bg:"#FCE4EC",ft:"#880E4F"},
+  {bar:"#1976D2",line:"#388E3C",bd:"#1976D2",bg:"#E3F2FD",ft:"#0D47A1"},
+  {bar:"#E65100",line:"#1A237E",bd:"#E65100",bg:"#FBE9E7",ft:"#BF360C"},
+  {bar:"#00796B",line:"#C2185B",bd:"#00796B",bg:"#E0F2F1",ft:"#004D40"},
+  {bar:"#283593",line:"#F9A825",bd:"#283593",bg:"#E8EAF6",ft:"#1A237E"},
+  {bar:"#BF360C",line:"#0097A7",bd:"#BF360C",bg:"#FBE9E7",ft:"#870000"},
+  {bar:"#1B5E20",line:"#FF4081",bd:"#1B5E20",bg:"#E8F5E9",ft:"#003300"},
+  {bar:"#880E4F",line:"#69F0AE",bd:"#880E4F",bg:"#FCE4EC",ft:"#560027"},
+  {bar:"#0277BD",line:"#FF6D00",bd:"#0277BD",bg:"#E1F5FE",ft:"#01579B"},
+  {bar:"#33691E",line:"#AA00FF",bd:"#33691E",bg:"#F1F8E9",ft:"#1B4000"},
+  {bar:"#4E342E",line:"#00E676",bd:"#4E342E",bg:"#EFEBE9",ft:"#3E2723"},
+  {bar:"#006064",line:"#FF1744",bd:"#006064",bg:"#E0F7FA",ft:"#003D40"},
+  {bar:"#4A148C",line:"#FFAB00",bd:"#4A148C",bg:"#F3E5F5",ft:"#12005E"},
+  {bar:"#01579B",line:"#76FF03",bd:"#01579B",bg:"#E1F5FE",ft:"#002f6c"},
+  {bar:"#827717",line:"#E040FB",bd:"#827717",bg:"#F9FBE7",ft:"#524c00"},
+  {bar:"#B71C1C",line:"#00BFA5",bd:"#B71C1C",bg:"#FFEBEE",ft:"#7F0000"},
+  {bar:"#0D47A1",line:"#FF6F00",bd:"#0D47A1",bg:"#E3F2FD",ft:"#002171"},
+  {bar:"#004D40",line:"#FF4081",bd:"#004D40",bg:"#E0F2F1",ft:"#00251a"},
+  {bar:"#263238",line:"#FFEA00",bd:"#263238",bg:"#ECEFF1",ft:"#000a12"},
+  {bar:"#870000",line:"#00E5FF",bd:"#870000",bg:"#FFEBEE",ft:"#4a0000"},
+  {bar:"#1A237E",line:"#F4511E",bd:"#1A237E",bg:"#E8EAF6",ft:"#000051"},
+  {bar:"#006400",line:"#FF8F00",bd:"#006400",bg:"#E8F5E9",ft:"#003000"},
+  {bar:"#7B1FA2",line:"#1DE9B6",bd:"#7B1FA2",bg:"#F3E5F5",ft:"#4a0072"},
+  {bar:"#BF6900",line:"#0091EA",bd:"#BF6900",bg:"#FFF8E1",ft:"#7a4200"},
 ];
 
-let MONTHS = [];
-let currentData = [];
-let chartInstances = {};
+let MONTHS=[],currentData=[],chartInstances={},_seq=0;
 
-// ── STEP INDICATOR ────────────────────────────────────────────────────────────
-function setStep(n) {
-  [1,2,3].forEach(i => {
-    const el = document.getElementById("step"+i);
-    if (!el) return;
-    el.className = "load-step " + (i < n ? "done" : i === n ? "active" : "");
-  });
+// ── DEBUG LOG ─────────────────────────────────────────────────────────────────
+function log(msg,cls=""){
+  const el=document.getElementById("debugLog");
+  const ts=new Date().toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit",second:"2-digit"});
+  const line=`[${ts}] ${msg}`;
+  const span=document.createElement("span");
+  span.className=cls?`log-${cls}`:"";
+  span.textContent=line+"\n";
+  el.appendChild(span);
+  el.scrollTop=el.scrollHeight;
 }
+function clearLog(){document.getElementById("debugLog").innerHTML="";}
 
-// ── MAIN DATA LOADER from Apps Script ────────────────────────────────────────
-async function loadLiveData(showOverlay=true) {
-  if (showOverlay) {
+// ── MAIN LOADER ───────────────────────────────────────────────────────────────
+async function loadLiveData(overlay=true){
+  if(overlay){
     document.getElementById("loadOverlay").classList.remove("hidden");
+    document.getElementById("loadMsg").textContent="Fetching live data from Google Sheets…";
   }
-  setStep(1);
-  setStatus("loading", "Connecting to Google Sheets via Apps Script…");
-  document.getElementById("errorPanel").style.display = "none";
+  clearLog();
+  document.getElementById("reloadBtn").disabled=true;
+  document.getElementById("spinIco").classList.add("go");
+  document.getElementById("debugSummary").innerHTML="";
 
-  // spinning refresh button
-  const btn = document.getElementById("refreshBtn");
-  btn.classList.add("spinning");
+  log("Calling Apps Script URL…","info");
+  log(APPS_URL.substring(0,80)+"…","info");
+
+  // Add timestamp to URL to bust ANY cache
+  const bustUrl = APPS_URL + (APPS_URL.includes("?")?"&":"?") + "_t=" + Date.now();
+
+  let raw="", success=false;
 
   try {
-    // Fetch from Apps Script — no CORS issue since Apps Script returns proper headers
-    const resp = await fetch(APPS_SCRIPT_URL, {
-      method: "GET",
-      redirect: "follow"
+    log("Sending fetch request (cache: no-store)…","info");
+    const resp = await fetch(bustUrl, {
+      method:"GET",
+      cache:"no-store",
+      headers:{"Cache-Control":"no-cache, no-store, must-revalidate","Pragma":"no-cache"}
     });
 
-    if (!resp.ok) throw new Error("Apps Script returned HTTP " + resp.status +
-      ". Check that your deployment is set to 'Anyone can access'.");
+    log("HTTP response: "+resp.status+" "+resp.statusText, resp.ok?"ok":"err");
 
-    const raw = await resp.text();
+    raw = await resp.text();
+    log("Response size: "+raw.length+" characters","info");
+    log("First 200 chars of response:","info");
+    log(raw.substring(0,200)+(raw.length>200?"…":""),"warn");
 
-    setStep(2);
-    document.getElementById("loadMsg").textContent = "Parsing sheet data…";
+    if(!resp.ok) throw new Error("HTTP "+resp.status);
 
-    // Parse the response — Apps Script returns a 2D array as JSON
+    // Try parse JSON
     let rows;
-    try {
-      rows = JSON.parse(raw);
-    } catch(e) {
-      throw new Error("Apps Script response is not valid JSON. Got: " +
-        raw.substring(0, 120) + "…  — Check your Apps Script doGet() function.");
+    try{
+      rows=JSON.parse(raw);
+      log("✅ JSON parsed successfully — "+rows.length+" rows found","ok");
+    }catch(e){
+      throw new Error("Response is NOT valid JSON.\nGot: "+raw.substring(0,150)+
+        "\n\nFIX: Your Apps Script doGet() must return:\nContentService.createTextOutput(JSON.stringify(data)).setMimeType(ContentService.MimeType.JSON)");
     }
 
-    // Validate structure — must be array of arrays
-    if (!Array.isArray(rows) || rows.length < 2) {
-      throw new Error("Expected a 2D array with at least 2 rows. Got: " +
-        JSON.stringify(rows).substring(0,120));
-    }
+    if(!Array.isArray(rows)||rows.length<2)
+      throw new Error("Expected array with 2+ rows, got: "+JSON.stringify(rows).substring(0,100));
 
-    // Row 0 = headers: ["Main Raw Material Name", "Feb 2026", "Apr 2026", ...]
-    const headers = rows[0].map(h => String(h).trim());
-    const monthCols = headers.slice(1).filter(h => h); // all columns after first
+    const headers=rows[0].map(h=>String(h||"").trim());
+    log("Header row: "+JSON.stringify(headers),"info");
 
-    if (monthCols.length === 0) {
-      throw new Error("No month columns found in header row. Header: " +
-        JSON.stringify(headers));
-    }
+    const monthCols=headers.slice(1).filter(h=>h);
+    if(monthCols.length===0) throw new Error("No month columns in header: "+JSON.stringify(headers));
+    log("Months found: "+monthCols.join(", "),"ok");
 
-    // Parse data rows
-    const data = [];
-    for (let i = 1; i < rows.length; i++) {
-      const row  = rows[i];
-      const name = String(row[0] || "").trim();
-      if (!name) continue;
-
-      const prices = monthCols.map((_, mi) => {
-        const cell = row[mi + 1];
-        if (cell === "" || cell === null || cell === undefined) return null;
-        const n = parseFloat(String(cell).replace(/[^0-9.\-]/g, ""));
-        return isNaN(n) ? null : n;
+    const data=[];
+    for(let i=1;i<rows.length;i++){
+      const row=rows[i];
+      const name=String(row[0]||"").trim();
+      if(!name)continue;
+      const prices=monthCols.map((_,mi)=>{
+        const cell=row[mi+1];
+        if(cell===""||cell===null||cell===undefined)return null;
+        const n=parseFloat(String(cell).replace(/[^0-9.\-]/g,""));
+        return isNaN(n)?null:n;
       });
-
-      if (prices.some(p => p !== null)) {
-        data.push({ name, prices });
-      }
+      if(prices.some(p=>p!==null))data.push({name,prices});
     }
 
-    if (data.length === 0) {
-      throw new Error("Sheet has headers but no data rows with prices. " +
-        "Check your Apps Script getDataRange() is pointing to the correct sheet tab.");
-    }
+    if(data.length===0) throw new Error("No data rows with prices found. Check sheet tab name in Apps Script.");
 
-    // ✅ Success — update globals
-    MONTHS.length = 0;
-    monthCols.forEach(m => MONTHS.push(m));
-    currentData = data;
+    log("✅ Parsed "+data.length+" RMs with prices","ok");
 
-    setStep(3);
-    document.getElementById("loadMsg").textContent = "Rendering " + data.length + " charts…";
+    // Log first 3 RMs to confirm values
+    data.slice(0,3).forEach(d=>{
+      log("  → "+d.name+": "+d.prices.map((p,i)=>monthCols[i]+"=₹"+(p??"-")).join(", "),"ok");
+    });
 
-    populateMonthSelects();
-    buildGrid(currentData, 0, MONTHS.length - 1, "", "all");
+    // Update globals
+    MONTHS.length=0; monthCols.forEach(m=>MONTHS.push(m));
+    currentData=data;
 
-    // Update UI badges
-    document.getElementById("hBadge").textContent = data.length + " Raw Materials";
-    document.getElementById("hLive").textContent  = "🟢 Live";
-    document.getElementById("hLive").className    = "badge live";
-    document.getElementById("topSubtitle").textContent =
-      "Base = first available price per RM  |  " + MONTHS.length + " months: " +
-      MONTHS[0] + " → " + MONTHS[MONTHS.length-1] + "  |  Auto-synced from Google Sheets";
+    populateSelects();
+    buildGrid(currentData,0,MONTHS.length-1,"","all");
 
-    setStatus("ok", "✅ Live data loaded — " + data.length + " RMs, " +
-      MONTHS.length + " months");
-    document.getElementById("lastRefresh").textContent =
-      "Last refreshed: " + new Date().toLocaleTimeString("en-IN",
-        {hour:"2-digit", minute:"2-digit"}) + "  " +
-      new Date().toLocaleDateString("en-IN");
+    document.getElementById("hBadge").textContent=data.length+" Raw Materials";
+    document.getElementById("hLive").textContent="🟢 Live";
+    document.getElementById("hLive").className="badge live";
+    document.getElementById("topSub").textContent=
+      "Base = first available price per RM  |  "+MONTHS.length+" months: "+
+      MONTHS[0]+" → "+MONTHS[MONTHS.length-1]+"  |  🟢 Auto-synced from Google Sheets";
+
+    const ts=new Date().toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit",second:"2-digit"})
+              +"  "+new Date().toLocaleDateString("en-IN");
+    document.getElementById("lastTs").textContent="Last refreshed: "+ts;
+
+    document.getElementById("debugSummary").innerHTML=
+      `<div class="ds">✅ <b>${data.length}</b> RMs loaded</div>
+       <div class="ds">📅 <b>${monthCols.length}</b> months: ${monthCols.join(" · ")}</div>
+       <div class="ds">🕐 <b>${ts}</b></div>`;
+
+    success=true;
 
   } catch(err) {
-    // ── FALLBACK to screenshot data ──────────────────────────────────────────
-    console.error("Live load failed:", err.message);
+    log("❌ ERROR: "+err.message,"err");
+    log("Using fallback screenshot data…","warn");
 
-    MONTHS.length = 0;
-    FALLBACK_MONTHS.forEach(m => MONTHS.push(m));
-    currentData = FALLBACK_DATA;
+    MONTHS.length=0; FB_MONTHS.forEach(m=>MONTHS.push(m));
+    currentData=FB_DATA;
+    populateSelects();
+    buildGrid(currentData,0,MONTHS.length-1,"","all");
 
-    populateMonthSelects();
-    buildGrid(currentData, 0, MONTHS.length - 1, "", "all");
+    document.getElementById("hBadge").textContent=FB_DATA.length+" RMs (Fallback)";
+    document.getElementById("hLive").textContent="⚠️ Offline";
+    document.getElementById("hLive").className="badge warn";
+    document.getElementById("topSub").textContent="⚠️ Could not load live data — showing fallback";
 
-    document.getElementById("hBadge").textContent = FALLBACK_DATA.length + " Raw Materials";
-    document.getElementById("hLive").textContent  = "⚠️ Offline";
-    document.getElementById("hLive").className    = "badge err";
-    document.getElementById("topSubtitle").textContent =
-      "Showing fallback data — could not reach Google Sheets";
-
-    // Show detailed error panel
-    const panel = document.getElementById("errorPanel");
-    panel.style.display = "block";
-    document.getElementById("errorDetail").innerHTML =
-      "<b>Error:</b> " + err.message + "<br><br>" +
-      "<b>Fix checklist:</b><br>" +
-      "1. Open Apps Script → Deploy → Manage deployments → Edit → " +
-      "set <b>Who has access</b> to <code>Anyone</code> (not 'Anyone with Google account')<br>" +
-      "2. Click <b>Deploy</b> again and copy the new URL<br>" +
-      "3. Make sure your <code>doGet()</code> function returns " +
-      "<code>ContentService.createTextOutput(JSON.stringify(data))" +
-      ".setMimeType(ContentService.MimeType.JSON)</code><br>" +
-      "4. Check the Apps Script has permission to access your spreadsheet";
-
-    setStatus("err", "⚠️ Could not load live data — showing fallback. See error details above.");
-    document.getElementById("lastRefresh").textContent = "Using offline fallback";
+    document.getElementById("debugSummary").innerHTML=
+      `<div class="ds" style="color:#f85149;">❌ Live load failed — showing fallback data</div>
+       <div class="ds" style="color:#d29922;">Fix: Check error above ↑ in the debug log</div>`;
   }
 
-  btn.classList.remove("spinning");
-  hideLoading();
-}
-
-async function refreshData() {
-  await loadLiveData(false);
-}
-
-// ── MONTH SELECTS ─────────────────────────────────────────────────────────────
-function populateMonthSelects() {
-  ["fromMonth","toMonth"].forEach(id => {
-    const sel = document.getElementById(id);
-    sel.innerHTML = MONTHS.map((m,i) =>
-      `<option value="${i}">${m}</option>`).join("");
-  });
-  document.getElementById("toMonth").value = MONTHS.length - 1;
-}
-
-// ── STATUS / LOADING HELPERS ──────────────────────────────────────────────────
-function setStatus(type, msg) {
-  document.getElementById("statusDot").className = "status-dot " + type;
-  const t = document.getElementById("statusText");
-  t.textContent = msg;
-  t.className = type;
-}
-function hideLoading() {
+  document.getElementById("reloadBtn").disabled=false;
+  document.getElementById("spinIco").classList.remove("go");
   document.getElementById("loadOverlay").classList.add("hidden");
 }
-function showLoading() {
-  document.getElementById("loadOverlay").classList.remove("hidden");
+
+function populateSelects(){
+  ["fromMonth","toMonth"].forEach(id=>{
+    const s=document.getElementById(id);
+    s.innerHTML=MONTHS.map((m,i)=>`<option value="${i}">${m}</option>`).join("");
+  });
+  document.getElementById("toMonth").value=MONTHS.length-1;
 }
 
-// ── CALCULATION HELPERS ───────────────────────────────────────────────────────
-function getBase(p){ for(let v of p) if(v!==null) return v; return null; }
-function calcIdx(p,b){ return p===null||b===null?null:+(p/b*100).toFixed(1); }
+// ── CALCULATIONS ──────────────────────────────────────────────────────────────
+function getBase(p){for(let v of p)if(v!==null)return v;return null;}
+function calcIdx(p,b){return p===null||b===null?null:+(p/b*100).toFixed(1);}
 function calcMoM(prices,i){
-  if(i===0||prices[i]===null||prices[i-1]===null) return null;
-  return +((prices[i]-prices[i-1])/prices[i-1]*100).toFixed(1);
+  if(i===0||prices[i]===null||prices[i-1]===null)return null;
+  return+((prices[i]-prices[i-1])/prices[i-1]*100).toFixed(1);
 }
 function getTrend(rm,from,to){
-  const base=rm.prices[from]; if(base===null) return "new";
-  let last=null;
-  for(let i=to;i>=from;i--) if(rm.prices[i]!==null){last=rm.prices[i];break;}
-  if(last===null) return "new";
-  const d=last-base;
+  const b=rm.prices[from];if(b===null)return"new";
+  let l=null;for(let i=to;i>=from;i--)if(rm.prices[i]!==null){l=rm.prices[i];break;}
+  if(l===null)return"new";const d=l-b;
   return Math.abs(d)<0.01?"flat":d>0?"up":"down";
 }
-function trendLabel(rm,from,to){
-  const t=getTrend(rm,from,to);
-  if(t==="new") return "New Entry";
-  const base=rm.prices[from]; let last=null;
-  for(let i=to;i>=from;i--) if(rm.prices[i]!==null){last=rm.prices[i];break;}
-  if(last===null||base===null) return "—";
-  const p=+((last-base)/base*100).toFixed(1);
-  return (p>=0?"+":"")+p+"% overall";
+function trendLbl(rm,from,to){
+  const t=getTrend(rm,from,to);if(t==="new")return"New Entry";
+  const b=rm.prices[from];let l=null;
+  for(let i=to;i>=from;i--)if(rm.prices[i]!==null){l=rm.prices[i];break;}
+  if(l===null||b===null)return"—";
+  const p=+((l-b)/b*100).toFixed(1);return(p>=0?"+":"")+p+"% overall";
 }
-function momCls(v){return v===null?"flat":v>0?"up":v<0?"dn":"flat";}
+function mCls(v){return v===null?"flat":v>0?"up":v<0?"dn":"flat";}
 
-// roundRect polyfill
 if(!CanvasRenderingContext2D.prototype.roundRect){
   CanvasRenderingContext2D.prototype.roundRect=function(x,y,w,h,r){
     this.beginPath();this.moveTo(x+r,y);this.lineTo(x+w-r,y);
@@ -482,149 +407,119 @@ if(!CanvasRenderingContext2D.prototype.roundRect){
   };
 }
 
-// ── PILL LABEL PLUGIN ─────────────────────────────────────────────────────────
-Chart.register({
-  id:"pills",
-  afterDatasetsDraw(chart){
-    const {ctx}=chart, pal=chart._pal||{bar:"#1F6DB5",line:"#E24B4A"};
-    chart.data.datasets.forEach((ds,di)=>{
-      const meta=chart.getDatasetMeta(di);
-      if(!meta.visible) return;
-      meta.data.forEach((el,i)=>{
-        const val=ds.data[i];
-        if(val===null||val===undefined) return;
-        const fSize=9,x=el.x;
-        let y,txt,bg;
-        if(di===0){y=el.y-7;txt=val+"%";bg=pal.bar;}
-        else{
-          if(val===null) return;
-          y=el.y-12;txt=(val>=0?"+":"")+val+"%";bg=pal.line;
-        }
-        ctx.save();
-        ctx.font=`700 ${fSize}px Arial`;
-        const tw=ctx.measureText(txt).width,pad=3.5;
-        const bw=tw+pad*2,bh=fSize+pad*1.8,bx=x-bw/2,by=y-bh;
-        ctx.beginPath();ctx.roundRect(bx,by,bw,bh,3);
-        ctx.fillStyle=bg;ctx.fill();
-        ctx.fillStyle="#fff";ctx.textAlign="center";ctx.textBaseline="middle";
-        ctx.fillText(txt,x,by+bh/2);
-        ctx.restore();
-      });
+Chart.register({id:"pills",afterDatasetsDraw(chart){
+  const{ctx}=chart,p=chart._p||{bar:"#1F6DB5",line:"#E24B4A"};
+  chart.data.datasets.forEach((ds,di)=>{
+    const meta=chart.getDatasetMeta(di);if(!meta.visible)return;
+    meta.data.forEach((el,i)=>{
+      const v=ds.data[i];if(v===null||v===undefined)return;
+      const fs=9,x=el.x;let y,txt,bg;
+      if(di===0){y=el.y-7;txt=v+"%";bg=p.bar;}
+      else{if(v===null)return;y=el.y-12;txt=(v>=0?"+":"")+v+"%";bg=p.line;}
+      ctx.save();ctx.font=`700 ${fs}px Arial`;
+      const tw=ctx.measureText(txt).width,pd=3.5;
+      const bw=tw+pd*2,bh=fs+pd*1.8,bx=x-bw/2,by=y-bh;
+      ctx.beginPath();ctx.roundRect(bx,by,bw,bh,3);
+      ctx.fillStyle=bg;ctx.fill();
+      ctx.fillStyle="#fff";ctx.textAlign="center";ctx.textBaseline="middle";
+      ctx.fillText(txt,x,by+bh/2);ctx.restore();
     });
-  }
-});
+  });
+}});
 
-// ── RENDER ONE CARD ───────────────────────────────────────────────────────────
-let _cardSeq = 0;
-function renderCard(rm, palIdx, from, to, cardEl){
-  const pal    = PALETTES[palIdx % PALETTES.length];
-  const months = MONTHS.slice(from, to+1);
-  const prices = rm.prices.slice(from, to+1);
-  const base   = getBase(prices);
-  const indices= prices.map(p=>calcIdx(p,base));
-  const moms   = prices.map((p,i)=>calcMoM(prices,i));
-  const trend  = getTrend(rm,from,to);
-  const tLabel = trendLabel(rm,from,to);
-  const tCls   = {up:"trend-up",down:"trend-down",flat:"trend-flat",new:"trend-new"}[trend];
-  const cid    = "cv_" + (++_cardSeq);
-
-  cardEl.style.borderTopColor = pal.border;
-
-  const kpiHtml = prices.map((p,i)=>{
+// ── RENDER CARD ───────────────────────────────────────────────────────────────
+function renderCard(rm,pi,from,to,cardEl){
+  const p=PAL[pi%PAL.length];
+  const months=MONTHS.slice(from,to+1);
+  const prices=rm.prices.slice(from,to+1);
+  const base=getBase(prices);
+  const indices=prices.map(v=>calcIdx(v,base));
+  const moms=prices.map((v,i)=>calcMoM(prices,i));
+  const trend=getTrend(rm,from,to);
+  const tCls={up:"trend-up",down:"trend-down",flat:"trend-flat",new:"trend-new"}[trend];
+  const cid="cv_"+(++_seq);
+  cardEl.style.borderTopColor=p.bd;
+  const kpi=prices.map((v,i)=>{
     const mom=moms[i];
     const momTxt=i===0?"Base":(mom===null?"N/A":(mom>=0?"+":"")+mom+"%");
-    const mLabel=months[i].replace(" 20","'");
-    return `<div class="kpi">
-      <div class="kpi-m">${mLabel}</div>
-      <div class="kpi-v${p===null?" na":""}">${p===null?"N/A":"₹"+p}</div>
-      <div class="kpi-d ${i===0?"base":momCls(mom)}">${momTxt}</div>
-    </div>`;
+    const ml=months[i].replace(" 2026","").replace(" 20","'");
+    return`<div class="kpi"><div class="kpi-m">${ml}</div>
+      <div class="kpi-v${v===null?" na":""}">${v===null?"N/A":"₹"+v}</div>
+      <div class="kpi-d ${i===0?"base":mCls(mom)}">${momTxt}</div></div>`;
   }).join("");
-
   cardEl.innerHTML=`
     <div class="card-head">
-      <div>
-        <div class="rm-name">${rm.name}</div>
-        <div class="rm-sub">Base ₹${base??'—'} &nbsp;|&nbsp; ${months[0]} → ${months[months.length-1]}</div>
+      <div><div class="rm-name">${rm.name}</div>
+        <div class="rm-sub">Base ₹${base??'—'} | ${months[0]} → ${months[months.length-1]}</div>
       </div>
-      <div class="trend-badge ${tCls}" style="background:${pal.badgeBg};color:${pal.badgeFt};">${tLabel}</div>
+      <div class="trend-badge ${tCls}" style="background:${p.bg};color:${p.ft};">${trendLbl(rm,from,to)}</div>
     </div>
-    <div class="kpi-row" style="grid-template-columns:repeat(${months.length},1fr);">${kpiHtml}</div>
+    <div class="kpi-row" style="grid-template-columns:repeat(${months.length},1fr);">${kpi}</div>
     <div class="canvas-wrap">
       ${base!==null?`<canvas id="${cid}" height="165"></canvas>`
                    :`<div class="no-data">No data for selected range</div>`}
     </div>
     ${base!==null?`<div class="card-legend">
-      <div class="leg"><div class="leg-box" style="background:${pal.bar}"></div>Index vs Base (%)</div>
-      <div class="leg"><div class="leg-line" style="background:${pal.line}"></div>MoM Change (%)</div>
+      <div class="leg"><div class="leg-box" style="background:${p.bar}"></div>Index vs Base (%)</div>
+      <div class="leg"><div class="leg-line" style="background:${p.line}"></div>MoM Change (%)</div>
     </div>`:""}`;
-
-  if(base===null) return;
-  const cvEl=document.getElementById(cid);
-  if(!cvEl) return;
-
+  if(base===null)return;
+  const cvEl=document.getElementById(cid);if(!cvEl)return;
   const c=new Chart(cvEl,{
     data:{labels:months,datasets:[
       {type:"bar",label:"Index",data:indices,
-        backgroundColor:indices.map(v=>v===null?"rgba(0,0,0,0)":pal.bar),
-        hoverBackgroundColor:indices.map(v=>v===null?"rgba(0,0,0,0)":pal.bar+"cc"),
+        backgroundColor:indices.map(v=>v===null?"rgba(0,0,0,0)":p.bar),
+        hoverBackgroundColor:indices.map(v=>v===null?"rgba(0,0,0,0)":p.bar+"cc"),
         borderRadius:4,yAxisID:"y",order:2},
       {type:"line",label:"MoM",data:moms,
-        borderColor:pal.line,backgroundColor:pal.line+"18",borderWidth:2.5,
-        pointBackgroundColor:moms.map(v=>v===null?"transparent":pal.line),
+        borderColor:p.line,backgroundColor:p.line+"18",borderWidth:2.5,
+        pointBackgroundColor:moms.map(v=>v===null?"transparent":p.line),
         pointBorderColor:moms.map(v=>v===null?"transparent":"#fff"),
         pointBorderWidth:1.5,pointRadius:moms.map(v=>v===null?0:5),
         tension:0.35,yAxisID:"y2",order:1,spanGaps:true}
     ]},
-    options:{
-      responsive:true,maintainAspectRatio:false,
+    options:{responsive:true,maintainAspectRatio:false,
       interaction:{mode:"index",intersect:false},
-      plugins:{
-        legend:{display:false},
+      plugins:{legend:{display:false},
         tooltip:{backgroundColor:"#1F3864",padding:10,cornerRadius:7,
           callbacks:{
             title:items=>{const i=items[0].dataIndex;
               return months[i]+"  —  "+(prices[i]!==null?"₹"+prices[i]:"N/A");},
             label:item=>{
-              if(item.datasetIndex===0)
-                return item.raw!==null?" Index: "+item.raw+"%":" Index: N/A";
+              if(item.datasetIndex===0)return item.raw!==null?" Index: "+item.raw+"%":" Index: N/A";
               return item.raw===null?" MoM: —":" MoM: "+(item.raw>=0?"+":"")+item.raw+"%";}}}},
       scales:{
         x:{grid:{display:false},ticks:{font:{size:10,weight:"600"},color:"#1a2340"}},
-        y:{position:"left",title:{display:true,text:"Index (%)",color:pal.bar,font:{size:9}},
-          ticks:{callback:v=>v+"%",color:pal.bar,font:{size:9}},grid:{color:"rgba(0,0,0,0.06)"}},
-        y2:{position:"right",title:{display:true,text:"MoM %",color:pal.line,font:{size:9}},
-          ticks:{callback:v=>(v>=0?"+":"")+v+"%",color:pal.line,font:{size:9}},grid:{display:false}}},
+        y:{position:"left",title:{display:true,text:"Index (%)",color:p.bar,font:{size:9}},
+          ticks:{callback:v=>v+"%",color:p.bar,font:{size:9}},grid:{color:"rgba(0,0,0,0.06)"}},
+        y2:{position:"right",title:{display:true,text:"MoM %",color:p.line,font:{size:9}},
+          ticks:{callback:v=>(v>=0?"+":"")+v+"%",color:p.line,font:{size:9}},grid:{display:false}}},
       animation:{duration:400}}
   });
-  c._pal=pal;
-  chartInstances[cid]=c;
+  c._p=p;chartInstances[cid]=c;
 }
 
-// ── BUILD GRID ────────────────────────────────────────────────────────────────
+// ── GRID ──────────────────────────────────────────────────────────────────────
 function buildGrid(data,from,to,search,trendF){
   const grid=document.getElementById("chartGrid");
   Object.values(chartInstances).forEach(c=>c.destroy());
-  chartInstances={};grid.innerHTML="";_cardSeq=0;
+  chartInstances={};grid.innerHTML="";_seq=0;
   const term=(search||"").toLowerCase().trim();
-  let shown=0,palIdx=0;
+  let shown=0,pi=0;
   data.forEach(rm=>{
-    const slice=rm.prices.slice(from,to+1);
-    if(!slice.some(p=>p!==null)) return;
-    if(term&&!rm.name.toLowerCase().includes(term)) return;
+    const sl=rm.prices.slice(from,to+1);
+    if(!sl.some(p=>p!==null))return;
+    if(term&&!rm.name.toLowerCase().includes(term))return;
     const t=getTrend(rm,from,to);
-    if(trendF!=="all"&&t!==trendF) return;
+    if(trendF!=="all"&&t!==trendF)return;
     const card=document.createElement("div");
-    card.className="chart-card";
-    grid.appendChild(card);
-    renderCard(rm,palIdx,from,to,card);
-    palIdx++;shown++;
+    card.className="chart-card";grid.appendChild(card);
+    renderCard(rm,pi,from,to,card);pi++;shown++;
   });
   document.getElementById("matchCount").textContent=shown+" RM"+(shown!==1?"s":"")+" shown";
   document.getElementById("noResults").style.display=shown===0?"block":"none";
 }
 
-// ── FILTERS ───────────────────────────────────────────────────────────────────
 function applyFilters(){
   let from=parseInt(document.getElementById("fromMonth").value||0);
   let to=parseInt(document.getElementById("toMonth").value||0);
@@ -641,7 +536,6 @@ function resetFilters(){
   buildGrid(currentData,0,MONTHS.length-1,"","all");
 }
 
-// ── INIT ──────────────────────────────────────────────────────────────────────
 loadLiveData(true);
 </script>
 </body>
