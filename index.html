@@ -83,7 +83,7 @@ body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text);}
 .kpi-d{font-size:10px;margin-top:2px;}
 .kpi-d.up{color:#C0392B;}.kpi-d.dn{color:#27652a;}
 .kpi-d.flat{color:var(--sub);}.kpi-d.base{color:var(--blue);}
-.canvas-wrap{padding:10px 10px 4px;height:300px;position:relative;}
+.canvas-wrap{padding:10px 10px 4px;height:300px;position:relative;overflow:visible;}
 .no-data{display:flex;align-items:center;justify-content:center;
   height:100%;font-size:12px;color:#bbb;}
 .card-legend{display:flex;gap:16px;padding:4px 14px 12px;flex-wrap:wrap;}
@@ -133,8 +133,7 @@ body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text);}
 
 <div class="filter-bar">
   <label>Select RM</label>
-  <select id="searchInput" onchange="applyFilters()" style="width:220px;">
-    <option value="">-- All Raw Materials --</option>
+  <select id="searchInput" onchange="applyFilters()" style="width:260px;font-size:12px;font-weight:600;padding:6px 10px;border:1.5px solid #dde3ed;border-radius:6px;background:#f0f3f8;cursor:pointer;color:#1a2340;">
   </select>
   <div class="sep"></div>
   <label>From</label><select id="fromMonth" onchange="applyFilters()"></select>
@@ -257,13 +256,24 @@ let MONTHS=[], currentData=[], chartInstances={}, _seq=0;
 // ── POPULATE RM DROPDOWN ─────────────────────────────────────────────────────
 function populateRMDropdown(data) {
   const sel = document.getElementById("searchInput");
-  const cur = sel.value; // preserve current selection
-  sel.innerHTML = '<option value="">-- All Raw Materials --</option>' +
-    data.map(rm =>
-      `<option value="${rm.name.toLowerCase()}"${
-        rm.name.toLowerCase()===cur?' selected':''
-      }>${rm.name}</option>`
-    ).join("");
+  const cur = sel.value; // preserve selection across reloads
+  // Clear and rebuild
+  while (sel.options.length > 0) sel.remove(0);
+  // Add "All" option
+  const all = document.createElement("option");
+  all.value = "";
+  all.textContent = "-- All Raw Materials --";
+  sel.appendChild(all);
+  // Add each RM
+  data.forEach(function(rm) {
+    const opt = document.createElement("option");
+    opt.value = rm.name;          // exact name — no lowercase conversion
+    opt.textContent = rm.name;
+    if (rm.name === cur) opt.selected = true;
+    sel.appendChild(opt);
+  });
+  // If nothing selected, default to "All"
+  if (!sel.value) sel.selectedIndex = 0;
 }
 
 async function loadLiveData(overlay=true) {
@@ -357,6 +367,7 @@ async function loadLiveData(overlay=true) {
     currentData = data;
 
     populateSelects();
+    populateRMDropdown(currentData);
     buildGrid(currentData, 0, MONTHS.length - 1, "", "all");
 
     document.getElementById("hBadge").textContent  = data.length + " Raw Materials";
@@ -461,10 +472,10 @@ Chart.register({id:"pills",afterDatasetsDraw(chart){
     meta.data.forEach((el,i)=>{
       const v=ds.data[i];if(v===null||v===undefined)return;
       const fs=10,x=el.x;let y,txt,bg;
-      if(di===0){y=el.y-7;txt=v+"%";bg=p.bar;}
-      else{if(v===null)return;y=el.y-12;txt=(v>=0?"+":"")+v+"%";bg=p.line;}
+      if(di===0){y=el.y-10;txt=v+"%";bg=p.bar;}
+      else{if(v===null)return;y=el.y-14;txt=(v>=0?"+":"")+v+"%";bg=p.line;}
       ctx.save();ctx.font=`700 ${fs}px Arial`;
-      const tw=ctx.measureText(txt).width,pd=3.5;
+      const tw=ctx.measureText(txt).width,pd=4;
       const bw=tw+pd*2,bh=fs+pd*1.8,bx=x-bw/2,by=y-bh;
       ctx.beginPath();ctx.roundRect(bx,by,bw,bh,3);
       ctx.fillStyle=bg;ctx.fill();
@@ -527,7 +538,7 @@ function renderCard(rm,pi,from,to,cardEl){
       {type:"bar",label:"Index vs Base (%)",data:indices,
         backgroundColor:indices.map(v=>v===null?"rgba(0,0,0,0)":p.bar),
         hoverBackgroundColor:indices.map(v=>v===null?"rgba(0,0,0,0)":p.bar+"cc"),
-        borderRadius:4,yAxisID:"y",order:2},
+        borderRadius:6,maxBarThickness:72,yAxisID:"y",order:2},
       {type:"line",label:"MoM Change (%)",data:moms,
         borderColor:p.line,backgroundColor:p.line+"18",borderWidth:2.5,
         pointBackgroundColor:moms.map(v=>v===null?"transparent":p.line),
@@ -536,6 +547,7 @@ function renderCard(rm,pi,from,to,cardEl){
         tension:0.35,yAxisID:"y2",order:1,spanGaps:true}
     ]},
     options:{responsive:true,maintainAspectRatio:false,
+      layout:{padding:{top:32,right:10,bottom:4,left:4}},
       interaction:{mode:"index",intersect:false},
       plugins:{legend:{display:false},
         tooltip:{backgroundColor:"#1F3864",padding:10,cornerRadius:7,
@@ -548,15 +560,16 @@ function renderCard(rm,pi,from,to,cardEl){
               return item.raw===null?" MoM: —":
                 " MoM: "+(item.raw>=0?"+":"")+item.raw+"%";}}}},
       scales:{
-        x:{grid:{display:false},ticks:{font:{size:11,weight:"600"},color:"#1a2340"}},
-        y:{position:"left",
-          title:{display:true,text:"Index (%)",color:p.bar,font:{size:11}},
+        x:{grid:{display:false},ticks:{font:{size:12,weight:"700"},color:"#1a2340"},
+          border:{display:false}},
+        y:{position:"left",beginAtZero:true,grace:"15%",
+          title:{display:true,text:"Index (%)",color:p.bar,font:{size:11,weight:"600"}},
           ticks:{callback:v=>v+"%",color:p.bar,font:{size:10}},
-          grid:{color:"rgba(0,0,0,0.06)"}},
-        y2:{position:"right",
-          title:{display:true,text:"MoM %",color:p.line,font:{size:11}},
+          grid:{color:"rgba(0,0,0,0.08)"},border:{display:false}},
+        y2:{position:"right",grace:"15%",
+          title:{display:true,text:"MoM %",color:p.line,font:{size:11,weight:"600"}},
           ticks:{callback:v=>(v>=0?"+":"")+v+"%",color:p.line,font:{size:10}},
-          grid:{display:false}}},
+          grid:{display:false},border:{display:false}}},
       animation:{duration:400}}
   });
   c._p=p; chartInstances[cid]=c;
@@ -569,12 +582,12 @@ function buildGrid(data,from,to,search,trendF){
   const grid=document.getElementById("chartGrid");
   Object.values(chartInstances).forEach(c=>c.destroy());
   chartInstances={};grid.innerHTML="";_seq=0;
-  const term=(search||"").toLowerCase().trim();
+  const term=(search||"").trim(); // exact match — dropdown stores original name
   let shown=0,pi=0;
   data.forEach(rm=>{
     const sl=rm.prices.slice(from,to+1);
     if(!sl.some(p=>p!==null))return;
-    if(term&&rm.name.toLowerCase()!==term.toLowerCase())return;
+    if(term && rm.name !== term) return; // term is exact rm.name from dropdown
     const t=getTrend(rm,from,to);
     if(trendF!=="all"&&t!==trendF)return;
     const card=document.createElement("div");
@@ -587,19 +600,20 @@ function buildGrid(data,from,to,search,trendF){
 }
 
 function applyFilters(){
-  let from=parseInt(document.getElementById("fromMonth").value||0);
-  let to=parseInt(document.getElementById("toMonth").value||0);
-  if(to<from){to=from;document.getElementById("toMonth").value=from;}
-  buildGrid(currentData,from,to,
-    document.getElementById("searchInput").value,
-    document.getElementById("trendFilter").value);
+  let from = parseInt(document.getElementById("fromMonth").value || 0);
+  let to   = parseInt(document.getElementById("toMonth").value   || 0);
+  if (to < from) { to = from; document.getElementById("toMonth").value = from; }
+  // Get selected RM — dropdown .value is exact rm.name or "" for all
+  const rmSel   = document.getElementById("searchInput").value;
+  const trendSel = document.getElementById("trendFilter").value;
+  buildGrid(currentData, from, to, rmSel, trendSel);
 }
 function resetFilters(){
-  document.getElementById("searchInput").value="";
-  document.getElementById("fromMonth").value="0";
-  document.getElementById("toMonth").value=String(MONTHS.length-1);
-  document.getElementById("trendFilter").value="all";
-  buildGrid(currentData,0,MONTHS.length-1,"","all");
+  document.getElementById("searchInput").selectedIndex = 0; // back to "All RMs"
+  document.getElementById("fromMonth").value = "0";
+  document.getElementById("toMonth").value   = String(MONTHS.length - 1);
+  document.getElementById("trendFilter").value = "all";
+  buildGrid(currentData, 0, MONTHS.length - 1, "", "all");
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
